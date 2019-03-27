@@ -16,6 +16,9 @@ const routes: Routes = [{
     path: 'iot-dashboard',
     component: DashboardComponent,
   }, {
+    path: 'employees',
+    loadChildren: './employees/employees.module#EmployeesModule',
+  }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
   }, {

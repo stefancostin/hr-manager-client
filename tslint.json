@@ -4,7 +4,7 @@
   ],
   "rules": {
     "trailing-comma": [
-      true,
+      false,
       {
         "multiline": "always",
         "singleline": "never"
@@ -105,13 +105,11 @@
     "directive-selector": [
       true,
       "attribute",
-      "ngx",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "ngx",
       "kebab-case"
     ],
     "ban": [

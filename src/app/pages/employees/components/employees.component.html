@@ -1,0 +1,52 @@
+<nb-card>
+  <nb-card-header>
+    Employees
+  </nb-card-header>
+
+  <!-- Table View -->
+  <nb-card-body *ngIf="tableView">
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+
+  <!-- Form View -->
+  <nb-card-body *ngIf="!tableView">
+    <div class="row">
+      <form class="col-md-6">
+        <div class="form-group row">
+          <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="email" class="col-sm-3 col-form-label">E-Mail</label>
+          <div class="col-sm-9">
+            <input type="email" class="form-control" id="email" placeholder="your.name@mail.com">
+          </div>
+        </div>
+        <!-- <div class="col-md-12 col-lg-4 col-xxxl-4"> -->
+        <div class="form-group row">
+          <label for="hiringDate" class="col-sm-3 col-form-label">Hiring Date</label>
+          <div class="col-sm-9">
+            <input nbInput id="hiringDate" placeholder="Min Max Picker" [nbDatepicker]="picker">
+            <nb-datepicker #picker [min]="min" [max]="max"></nb-datepicker>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="offset-sm-3 col-sm-9">
+            <button type="submit" class="btn btn-primary">Add Employee</button>
+            <button type="submit" class="btn btn-outline-secondary ml-3">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </nb-card-body>
+
+</nb-card>
