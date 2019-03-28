@@ -9,3 +9,18 @@ button {
 #hiringDate {
     width: 100%;
 }
+
+.nb-select button.btn.btn-primary.btn-outline {
+    text-transform: lowercase !important;
+    letter-spacing: 0 !important;
+}
+
+:host .nb-select button.btn.btn-primary.btn-outline {
+    text-transform: lowercase !important;
+    letter-spacing: 0 !important;
+}
+
+::ng-deep .nb-select button.btn.btn-primary.btn-outline {
+    text-transform: lowercase !important;
+    letter-spacing: 0 !important;
+}
