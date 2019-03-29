@@ -4,6 +4,7 @@ import { NbDateService } from '@nebular/theme';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { EmployeesTableSettings } from './employees.settings';
+import * as moment from 'moment';
 
 @Component({
   selector: 'hr-employees',
@@ -13,8 +14,6 @@ import { EmployeesTableSettings } from './employees.settings';
 export class EmployeesComponent implements OnInit {
   public settings: any;
   public tableView: boolean;
-  public min: Date;
-  public max: Date;
 
   tableConfig: EmployeesTableSettings = new EmployeesTableSettings();
   source: LocalDataSource = new LocalDataSource();
@@ -25,14 +24,26 @@ export class EmployeesComponent implements OnInit {
     this.source.load(data);
     // Table Configuration
     this.settings = this.tableConfig.settings;
-    // Datepicker
-    this.min = this.dateService.addDay(this.dateService.today(), -3652);
-    this.max = this.dateService.addDay(this.dateService.today(), 60);
   }
 
   ngOnInit() {
-    // this.tableView = true;
+    this.tableView = true;
+  }
+
+  openCreateForm(event): void {
     this.tableView = false;
+  }
+
+  openTableView(): void {
+    this.tableView = true;
+  }
+
+  editItem(): void {
+    console.log('edit');
+  }
+
+  deleteItem(): void {
+    console.log('delete');
   }
 
   onDeleteConfirm(event): void {

@@ -4,13 +4,19 @@
   </nb-card-header>
 
   <!-- Table View -->
-  <nb-card-body *ngIf="tableView">
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+  <nb-card-body [hidden]="!tableView">
+    <ng2-smart-table 
+      [settings]="settings" 
+      [source]="source" 
+      (create)="openCreateForm($event)"
+      (edit)="editItem($event)"
+      (delete)="deleteItem($event)"
+      (deleteConfirm)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
 
   <!-- Form View -->
-  <nb-card-body *ngIf="!tableView">
+  <nb-card-body [hidden]="tableView">
     <div class="row">
       <form class="col-md-6">
         <div class="form-group row">
@@ -34,8 +40,8 @@
         <div class="form-group row">
           <label for="hiringDate" class="col-sm-3 col-form-label">Hiring Date</label>
           <div class="col-sm-9">
-            <input nbInput id="hiringDate" placeholder="Min Max Picker" [nbDatepicker]="picker">
-            <nb-datepicker #picker [min]="min" [max]="max" format="dd.MM.yyyy"></nb-datepicker>
+            <input nbInput id="hiringDate" placeholder="Hiring Date" [nbDatepicker]="picker">
+            <nb-datepicker #picker format="dd\MM\yyyy"></nb-datepicker>
           </div>
         </div>
         <div class="form-group row">
@@ -60,13 +66,10 @@
             </nb-select>
           </div>
         </div>
-
-
-
         <div class="form-group row">
           <div class="offset-sm-3 col-sm-9">
-            <button type="submit" class="btn btn-primary">Add Employee</button>
-            <button type="submit" class="btn btn-outline-secondary ml-3">Cancel</button>
+            <button type="submit" class="btn btn-success">Add Employee</button>
+            <button type="submit" class="btn btn-outline-secondary ml-3" (click)="openTableView()">Cancel</button>
           </div>
         </div>
       </form>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NbMomentDateModule } from '@nebular/moment';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
@@ -16,6 +16,7 @@ import { EmployeesComponent } from './components/employees.component';
     EmployeesRoutingModule,
     ThemeModule,
     Ng2SmartTableModule,
+    NbMomentDateModule,
   ]
 })
 export class EmployeesModule { }
