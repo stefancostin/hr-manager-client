@@ -3,7 +3,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { NbDateService } from '@nebular/theme';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
-import { EmployeesTableSettings } from './employees.settings';
+import { EmployeesTableSettings } from '../employees.settings';
+import { IEmployee, TransferObject, Actions } from '../employee.model';
 
 @Component({
   selector: 'hr-employees',
@@ -15,6 +16,8 @@ export class EmployeesContainerComponent implements OnInit {
   public tableView: boolean;
   public showTable: boolean;
   public showForm: boolean;
+  // public transferData: TransferObject;
+  public transferData: Object;
 
   tableConfig: EmployeesTableSettings = new EmployeesTableSettings();
   source: LocalDataSource = new LocalDataSource();
@@ -31,24 +34,11 @@ export class EmployeesContainerComponent implements OnInit {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
+    this.transferData = {};
   }
 
   /**
-   * Changes to Forms View
-   * Timeout included for Opacity Animation
-   */
-  openCreateForm(event): void {
-    this.showTable = false;
-    setTimeout(() => {
-      this.tableView = false;
-      setTimeout(() => {
-        this.showForm = true;
-      }, 250);
-    }, 250);
-  }
-
-  /**
-   * Changes to Table View
+   * Changes to Table View -- Back to Table
    * Event is Emitted from Employees Table
    * Timeout included for Opacity Animation
    */
@@ -58,16 +48,46 @@ export class EmployeesContainerComponent implements OnInit {
       this.tableView = true;
       setTimeout(() => {
         this.showTable = true;
-      }, 250);
-    }, 250);
+      }, 150);
+    }, 300);
   }
 
-  editItem(): void {
-    console.log('edit');
+  /**
+   * Changes to Forms View -- CREATE
+   * Timeout included for Opacity Animation
+   */
+  openCreateForm(event): void {
+    this.transferData = this.buildTransferObject(Actions.Create);
+
+    this.showTable = false;
+    setTimeout(() => {
+      this.tableView = false;
+      setTimeout(() => {
+        this.showForm = true;
+      }, 150);
+    }, 300);
+  }
+
+  /**
+   * Changes to Forms View -- EDIT
+   * Event is Emitted from Employees Table
+   * Timeout included for Opacity Animation
+   */
+  editItem(event): void {
+    // console.log(event.data);
+    this.transferData = this.buildTransferObject(Actions.Edit, event.data);
+
+    this.showTable = false;
+    setTimeout(() => {
+      this.tableView = false;
+      setTimeout(() => {
+        this.showForm = true;
+      }, 150);
+    }, 300);
   }
 
   deleteItem(): void {
-    console.log('delete');
+
   }
 
   onDeleteConfirm(event): void {
@@ -75,6 +95,28 @@ export class EmployeesContainerComponent implements OnInit {
       event.confirm.resolve();
     } else {
       event.confirm.reject();
+    }
+  }
+
+  private buildTransferObject(action: number, data?: Object) {
+    let transferObject: Object;
+    switch (action) {
+      case Actions.Create: {
+        transferObject = {
+          'formType': action
+        };
+        return transferObject;
+      }
+      case Actions.Edit: {
+        transferObject = {
+          'formType': action,
+          'data': data
+        };
+        return transferObject;
+      }
+      default: {
+        console.error('Action type not defined. Did you mean "Edit" or "Create"?');
+      }
     }
   }
 
