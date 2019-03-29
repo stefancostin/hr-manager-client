@@ -5,11 +5,13 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { EmployeesRoutingModule } from './employees-routing.module';
-import { EmployeesComponent } from './components/employees.component';
+import { EmployeesContainerComponent } from './components/employees-container.component';
+import { EmployeesFormComponent } from './components/employees-form.component';
 
 @NgModule({
   declarations: [
-    EmployeesComponent,
+    EmployeesContainerComponent,
+    EmployeesFormComponent,
   ],
   imports: [
     CommonModule,

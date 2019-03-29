@@ -1,0 +1,57 @@
+<div class="row">
+  <form class="col-md-6">
+    <div class="form-group row">
+      <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="firstName" placeholder="First Name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label">E-Mail</label>
+      <div class="col-sm-9">
+        <input type="email" class="form-control" id="email" placeholder="name.surname@mail.com">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="hiringDate" class="col-sm-3 col-form-label">Hiring Date</label>
+      <div class="col-sm-9">
+        <input nbInput id="hiringDate" placeholder="Hiring Date" [nbDatepicker]="picker">
+        <nb-datepicker #picker format="dd\MM\yyyy"></nb-datepicker>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="role" class="col-sm-3 col-form-label">Role</label>
+      <div class="col-sm-9">
+        <nb-select id="role" placeholder="Role" outline status="primary">
+          <nb-option value="1">Option 1</nb-option>
+          <nb-option value="2">Option 2</nb-option>
+          <nb-option value="3">Option 3</nb-option>
+          <nb-option value="4">Option 4</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="team" class="col-sm-3 col-form-label">Team</label>
+      <div class="col-sm-9">
+        <nb-select id="team" placeholder="Team" outline status="primary">
+          <nb-option value="1">Option 1</nb-option>
+          <nb-option value="2">Option 2</nb-option>
+          <nb-option value="3">Option 3</nb-option>
+          <nb-option value="4">Option 4</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-3 col-sm-9">
+        <button type="submit" class="btn btn-success">Add Employee</button>
+        <button type="submit" class="btn btn-outline-secondary ml-3" (click)="openTableView()">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

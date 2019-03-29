@@ -4,16 +4,17 @@ import { NbDateService } from '@nebular/theme';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { EmployeesTableSettings } from './employees.settings';
-import * as moment from 'moment';
 
 @Component({
   selector: 'hr-employees',
-  templateUrl: './employees.component.html',
-  styleUrls: ['./employees.component.scss']
+  templateUrl: './employees-container.component.html',
+  styleUrls: ['./employees-container.component.scss']
 })
-export class EmployeesComponent implements OnInit {
+export class EmployeesContainerComponent implements OnInit {
   public settings: any;
   public tableView: boolean;
+  public showTable: boolean;
+  public showForm: boolean;
 
   tableConfig: EmployeesTableSettings = new EmployeesTableSettings();
   source: LocalDataSource = new LocalDataSource();
@@ -28,14 +29,37 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit() {
     this.tableView = true;
+    this.showTable = true;
+    this.showForm = false;
   }
 
+  /**
+   * Changes to Forms View
+   * Timeout included for Opacity Animation
+   */
   openCreateForm(event): void {
-    this.tableView = false;
+    this.showTable = false;
+    setTimeout(() => {
+      this.tableView = false;
+      setTimeout(() => {
+        this.showForm = true;
+      }, 250);
+    }, 250);
   }
 
+  /**
+   * Changes to Table View
+   * Event is Emitted from Employees Table
+   * Timeout included for Opacity Animation
+   */
   openTableView(): void {
-    this.tableView = true;
+    this.showForm = false;
+    setTimeout(() => {
+      this.tableView = true;
+      setTimeout(() => {
+        this.showTable = true;
+      }, 250);
+    }, 250);
   }
 
   editItem(): void {

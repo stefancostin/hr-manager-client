@@ -1,13 +1,19 @@
-nb-card {
-    transform: translate3d(0, 0, 0);
-}
-
 button {
     cursor: pointer !important;
 }
 
-#hiringDate {
-    width: 100%;
+.hide-view {
+    opacity: 0;
+    transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.show-view {
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
 }
 
 .nb-select button.btn.btn-primary.btn-outline {
