@@ -22,7 +22,7 @@ export class EmployeesContainerComponent implements OnInit {
   tableConfig: EmployeesTableSettings = new EmployeesTableSettings();
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private service: SmartTableData, protected dateService: NbDateService<Date>) {
+  public constructor(private service: SmartTableData, protected dateService: NbDateService<Date>) {
     // Data Source
     const data = this.service.getData();
     this.source.load(data);
@@ -30,7 +30,7 @@ export class EmployeesContainerComponent implements OnInit {
     this.settings = this.tableConfig.settings;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
@@ -42,7 +42,7 @@ export class EmployeesContainerComponent implements OnInit {
    * Event is Emitted from Employees Table
    * Timeout included for Opacity Animation
    */
-  openTableView(): void {
+  public openTableView(): void {
     this.showForm = false;
     setTimeout(() => {
       this.tableView = true;
@@ -56,7 +56,7 @@ export class EmployeesContainerComponent implements OnInit {
    * Changes to Forms View -- CREATE
    * Timeout included for Opacity Animation
    */
-  openCreateForm(event): void {
+  public openCreateForm(event): void {
     this.transferData = this.buildTransferObject(Actions.Create);
 
     this.showTable = false;
@@ -73,7 +73,7 @@ export class EmployeesContainerComponent implements OnInit {
    * Event is Emitted from Employees Table
    * Timeout included for Opacity Animation
    */
-  editItem(event): void {
+  public editItem(event): void {
     // console.log(event.data);
     this.transferData = this.buildTransferObject(Actions.Edit, event.data);
 
@@ -86,11 +86,11 @@ export class EmployeesContainerComponent implements OnInit {
     }, 300);
   }
 
-  deleteItem(): void {
+  public deleteItem(): void {
 
   }
 
-  onDeleteConfirm(event): void {
+  public onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
     } else {
@@ -98,7 +98,20 @@ export class EmployeesContainerComponent implements OnInit {
     }
   }
 
-  private buildTransferObject(action: number, data?: Object) {
+  /**
+   * Method creates a TransferObject entity used to
+   * pass data from the Table View to the Form View.
+   *
+   * The TransferObject always includes a 'formType' attribute which specifies
+   * the type of action(@param) which the Form should take: 'EDIT' or 'CREATE'
+   *
+   * In case of 'EDIT', the editable entity is passed to the TransferObject
+   * on the 'data' attribute, passed inside the function through the data @param.
+   *
+   * @param action = Actions enum <number>
+   * @param data = Employee Entity. Passed only on EDIT action
+   */
+  private buildTransferObject(action: number, data?: Object): Object {
     let transferObject: Object;
     switch (action) {
       case Actions.Create: {

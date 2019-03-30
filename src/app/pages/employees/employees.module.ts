@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NbMomentDateModule } from '@nebular/moment';
 import { ThemeModule } from '../../@theme/theme.module';
@@ -15,6 +16,7 @@ import { EmployeesFormComponent } from './components/employees-form.component';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     EmployeesRoutingModule,
     ThemeModule,
     Ng2SmartTableModule,
