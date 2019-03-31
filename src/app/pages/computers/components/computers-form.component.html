@@ -1,0 +1,52 @@
+<section class="row">
+  <form class="col-md-6" [formGroup]="computersForm">
+    <div class="form-group row">
+      <div class="offset-sm-3 col-sm-9">
+        <h3 *ngIf="action === 'CREATE'" class="form-title-action">Add New <span class="form-title-categ">Computer</span></h3>
+        <h3 *ngIf="action === 'EDIT'" class="form-title-action">Edit <span class="form-title-categ">Computer</span></h3>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="os" class="col-sm-3 col-form-label">Operating System</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="os" formControlName="operating_system" placeholder="Operating System">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="cpu" class="col-sm-3 col-form-label">CPU</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="cpu" formControlName="cpu" placeholder="CPU">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="ram" class="col-sm-3 col-form-label">RAM</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="ram" formControlName="ram" placeholder="RAM">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="hdd" class="col-sm-3 col-form-label">HDD</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="hdd" formControlName="hdd" placeholder="HDD">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="employee" class="col-sm-3 col-form-label">Employee</label>
+      <div class="col-sm-9">
+        <nb-select id="employee" formControlName="employee_id" placeholder="Employee" outline status="primary">
+          <nb-option value="1">Option 1</nb-option>
+          <nb-option value="2">Option 2</nb-option>
+          <nb-option value="3">Option 3</nb-option>
+          <nb-option value="4">Option 4</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-3 col-sm-9">
+        <button *ngIf="action === 'CREATE'" type="submit" class="btn btn-success" (click)="createEntity()">Add Computer</button>
+        <button *ngIf="action === 'EDIT'" type="submit" class="btn btn-success" (click)="editEntity()">Edit Computer</button>
+        <button type="submit" class="btn btn-outline-secondary ml-3" (click)="openTableView()">Cancel</button>
+      </div>
+    </div>
+  </form>
+</section>

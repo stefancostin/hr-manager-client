@@ -1,9 +1,9 @@
 export interface IEmployee {
     id: number;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
-    hiringDate: string;
+    hiring_date: string;
     role_id?: number;
     team_id?: number;
 }
@@ -11,10 +11,4 @@ export interface IEmployee {
 export class TransferObject {
     formType: string;
     data?: IEmployee;
-}
-
-export enum Actions {
-    Create,
-    Edit,
-    Delete
 }

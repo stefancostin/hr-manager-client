@@ -1,0 +1,26 @@
+<nb-card>
+  <nb-card-header>
+    Roles
+  </nb-card-header>
+
+  <!-- Table View -->
+  <nb-card-body *ngIf="tableView" class="hide-view" [ngClass]="{'show-view' : showTable}">
+    <ng2-smart-table 
+      [settings]="settings" 
+      [source]="source" 
+      (create)="openCreateForm($event)"
+      (edit)="editItem($event)"
+      (delete)="deleteItem($event)"
+      (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+
+  <!-- Form View -->
+  <nb-card-body *ngIf="!tableView" class="hide-view" [ngClass]="{'show-view' : showForm}">
+    <hr-roles-form
+      [transferData]="transferData"
+      (leave)="openTableView()">
+    </hr-roles-form>
+  </nb-card-body>
+
+</nb-card>

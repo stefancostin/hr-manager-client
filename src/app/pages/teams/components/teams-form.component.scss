@@ -1,0 +1,15 @@
+@import '../../../@theme/styles/themes';
+
+button {
+    cursor: pointer !important;
+}
+
+.form-title-action {
+    font-weight: 500;
+    color: nb-theme(color-fg-text);
+}
+
+.form-title-categ {
+    font-weight: 300;
+    color: nb-theme(color-fg);
+}

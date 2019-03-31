@@ -16,8 +16,26 @@ const routes: Routes = [{
     path: 'iot-dashboard',
     component: DashboardComponent,
   }, {
+    path: 'competence-centers',
+    loadChildren: './competence-centers/competence-centers.module#CompetenceCentersModule',
+  }, {
+    path: 'computers',
+    loadChildren: './computers/computers.module#ComputersModule',
+  }, {
     path: 'employees',
     loadChildren: './employees/employees.module#EmployeesModule',
+  }, {
+    path: 'incidents',
+    loadChildren: './incidents/incidents.module#IncidentsModule',
+  }, {
+    path: 'projects',
+    loadChildren: './projects/projects.module#ProjectsModule',
+  }, {
+    path: 'roles',
+    loadChildren: './roles/roles.module#RolesModule',
+  }, {
+    path: 'teams',
+    loadChildren: './teams/teams.module#TeamsModule',
   }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',

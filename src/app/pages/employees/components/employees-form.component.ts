@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { IEmployee, TransferObject, Actions } from '../employee.model';
+import { IEmployee, TransferObject } from '../employee.model';
 import { EmployeeService } from '../services/employee.service';
+import { Actions } from '../../shared/actions.enum';
 
 @Component({
   selector: 'hr-employees-form',

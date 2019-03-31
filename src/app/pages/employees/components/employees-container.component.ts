@@ -4,7 +4,8 @@ import { NbDateService } from '@nebular/theme';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { EmployeesTableSettings } from '../employees.settings';
-import { IEmployee, TransferObject, Actions } from '../employee.model';
+import { IEmployee, TransferObject } from '../employee.model';
+import { Actions } from '../../shared/actions.enum';
 
 @Component({
   selector: 'hr-employees',

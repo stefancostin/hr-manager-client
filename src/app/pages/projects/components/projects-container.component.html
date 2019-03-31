@@ -1,0 +1,26 @@
+<nb-card>
+  <nb-card-header>
+    Projects
+  </nb-card-header>
+
+  <!-- Table View -->
+  <nb-card-body *ngIf="tableView" class="hide-view" [ngClass]="{'show-view' : showTable}">
+    <ng2-smart-table 
+      [settings]="settings" 
+      [source]="source" 
+      (create)="openCreateForm($event)"
+      (edit)="editItem($event)"
+      (delete)="deleteItem($event)"
+      (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+
+  <!-- Form View -->
+  <nb-card-body *ngIf="!tableView" class="hide-view" [ngClass]="{'show-view' : showForm}">
+    <hr-projects-form
+      [transferData]="transferData"
+      (leave)="openTableView()">
+    </hr-projects-form>
+  </nb-card-body>
+
+</nb-card>

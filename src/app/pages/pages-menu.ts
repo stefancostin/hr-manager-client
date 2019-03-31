@@ -34,7 +34,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Competence Centers',
     icon: 'nb-location',
-    link: '/pages/tables/smart-table',
+    link: '/pages/competence-centers',
   },
   {
     title: 'PROJECTS',
