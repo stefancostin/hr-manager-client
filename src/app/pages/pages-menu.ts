@@ -12,6 +12,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
+    title: 'Roles',
+    icon: 'nb-e-commerce',
+    link: '/pages/roles',
+  },
+  {
     title: 'Employees',
     icon: 'nb-person',
     link: '/pages/employees',
@@ -19,17 +24,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Teams',
     icon: 'nb-grid-b-outline',
-    link: '/pages/tables/smart-table',
-  },
-  {
-    title: 'Roles',
-    icon: 'nb-e-commerce',
-    link: '/pages/tables/smart-table',
+    link: '/pages/teams',
   },
   {
     title: 'Computers',
     icon: 'nb-layout-sidebar-left',
-    link: '/pages/tables/smart-table',
+    link: '/pages/computers',
   },
   {
     title: 'Competence Centers',
@@ -43,11 +43,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Projects',
     icon: 'nb-compose',
-    link: '/pages/tables/smart-table',
+    link: '/pages/projects',
   },
   {
     title: 'Incidents',
     icon: 'nb-shuffle',
-    link: '/pages/tables/smart-table',
+    link: '/pages/incidents',
   },
 ];
