@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ITeam, TransferObject } from '../team.model';
 import { TeamService } from '../services/team.service';
@@ -16,6 +16,7 @@ export class TeamsFormComponent implements OnInit {
   // @Input() transferData: TransferObject;
   public action: string;
   public teamsForm: FormGroup;
+  public data: ITeam;
 
   public constructor(private fb: FormBuilder, private teamService: TeamService) { }
 
@@ -61,6 +62,8 @@ export class TeamsFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.createForm();
+      this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
@@ -68,16 +71,31 @@ export class TeamsFormComponent implements OnInit {
 
   /**
    * Creates a blank Reactive Form with validation
-   * used for the 'CREATE' action.
+   * used for the 'CREATE' and 'EDIT' action.
    *
-   * Called inside the checkActionOnInit() method
-   * based on the action type of the component.
+   * Called inside the checkActionOnInit() method.
    */
   private createForm(): void {
     this.teamsForm = this.fb.group({
-      code: null,
-      name: null,
-      competence_center_id: null,
+      id: [null],
+      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      name: [null, [Validators.required, Validators.maxLength(25)]],
+      competence_center_id: [null, [Validators.required]],
+    });
+  }
+
+  /**
+   * Populates the blank Reactive Form with
+   * data provided by the component's service.
+   *
+   * Called inside checkActionOnInit() on 'EDIT'.
+   */
+  private populateEditForm(): void {
+    this.teamsForm.setValue({
+      id: this.data.id,
+      code: this.data.code,
+      name: this.data.name,
+      competence_center_id: this.data.competence_center_id,
     });
   }
 

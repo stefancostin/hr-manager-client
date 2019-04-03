@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ICompetenceCenter, TransferObject } from '../competence-center.model';
 import { CompetenceCenterService } from '../services/competence-center.service';
@@ -16,6 +16,7 @@ export class CompetenceCentersFormComponent implements OnInit {
   // @Input() transferData: TransferObject;
   public action: string;
   public competenceCentersForm: FormGroup;
+  public data: ICompetenceCenter;
 
   public constructor(private fb: FormBuilder, private competenceCenterService: CompetenceCenterService) { }
 
@@ -61,23 +62,40 @@ export class CompetenceCentersFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.createForm();
+      this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
   }
 
   /**
-   * Creates a blank Reactive Form with validation
-   * used for the 'CREATE' action.
+   * Populates the blank Reactive Form with
+   * data provided by the component's service.
    *
-   * Called inside the checkActionOnInit() method
-   * based on the action type of the component.
+   * Called inside checkActionOnInit() on 'EDIT'.
    */
   private createForm(): void {
     this.competenceCentersForm = this.fb.group({
-      code: null,
-      city: null,
-      country: null,
+      id: [null],
+      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      city: [null, [Validators.required, Validators.maxLength(25)]],
+      country: [null, [Validators.required, Validators.maxLength(25)]],
+    });
+  }
+
+  /**
+   * Populates the blank Reactive Form with
+   * data provided by the component's service.
+   *
+   * Called inside checkActionOnInit() on 'EDIT'.
+   */
+  private populateEditForm(): void {
+    this.competenceCentersForm.setValue({
+      id: this.data.id,
+      code: this.data.code,
+      city: this.data.city,
+      country: this.data.country,
     });
   }
 

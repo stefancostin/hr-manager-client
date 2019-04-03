@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { IProject, TransferObject } from '../project.model';
 import { ProjectService } from '../services/project.service';
@@ -16,6 +16,7 @@ export class ProjectsFormComponent implements OnInit {
   // @Input() transferData: TransferObject;
   public action: string;
   public projectsForm: FormGroup;
+  public data: IProject;
 
   public constructor(private fb: FormBuilder, private projectService: ProjectService) { }
 
@@ -61,6 +62,8 @@ export class ProjectsFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.createForm();
+      this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
@@ -68,16 +71,31 @@ export class ProjectsFormComponent implements OnInit {
 
   /**
    * Creates a blank Reactive Form with validation
-   * used for the 'CREATE' action.
+   * used for the 'CREATE' and 'EDIT' action.
    *
-   * Called inside the checkActionOnInit() method
-   * based on the action type of the component.
+   * Called inside the checkActionOnInit() method.
    */
   private createForm(): void {
     this.projectsForm = this.fb.group({
-      code: null,
-      name: null,
-      team_id: null,
+      id: [null],
+      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      name: [null, [Validators.required, Validators.maxLength(25)]],
+      team_id: [null, [Validators.required]]
+    });
+  }
+
+  /**
+   * Populates the blank Reactive Form with
+   * data provided by the component's service.
+   *
+   * Called inside checkActionOnInit() on 'EDIT'.
+   */
+  private populateEditForm(): void {
+    this.projectsForm.setValue({
+      id: this.data.id,
+      code: this.data.code,
+      name: this.data.name,
+      team_id: this.data.team_id
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { IIncident, TransferObject } from '../incident.model';
 import { IncidentService } from '../services/incident.service';
@@ -16,6 +16,7 @@ export class IncidentsFormComponent implements OnInit {
   // @Input() transferData: TransferObject;
   public action: string;
   public incidentsForm: FormGroup;
+  public data: IIncident;
 
   public constructor(private fb: FormBuilder, private incidentService: IncidentService) { }
 
@@ -61,6 +62,8 @@ export class IncidentsFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.createForm();
+      this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
@@ -68,18 +71,35 @@ export class IncidentsFormComponent implements OnInit {
 
   /**
    * Creates a blank Reactive Form with validation
-   * used for the 'CREATE' action.
+   * used for the 'CREATE' and 'EDIT' action.
    *
-   * Called inside the checkActionOnInit() method
-   * based on the action type of the component.
+   * Called inside the checkActionOnInit() method.
    */
   private createForm(): void {
     this.incidentsForm = this.fb.group({
-      code: null,
-      subject: null,
-      description: null,
-      employee_id: null,
-      team_id: null,
+      id: [null],
+      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      subject: [null, [Validators.required, Validators.maxLength(25)]],
+      description: [null, [Validators.required, Validators.maxLength(200)]],
+      employee_id: [null, [Validators.required]],
+      project_id: [null, [Validators.required]]
+    });
+  }
+
+  /**
+   * Populates the blank Reactive Form with
+   * data provided by the component's service.
+   *
+   * Called inside checkActionOnInit() on 'EDIT'.
+   */
+  private populateEditForm(): void {
+    this.incidentsForm.setValue({
+      id: this.data.id,
+      code: this.data.code,
+      subject: this.data.subject,
+      description: this.data.description,
+      employee_id: this.data.employee_id,
+      project_id: this.data.project_id
     });
   }
 

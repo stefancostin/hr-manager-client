@@ -12,11 +12,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Roles',
-    icon: 'nb-e-commerce',
-    link: '/pages/roles',
-  },
-  {
     title: 'Employees',
     icon: 'nb-person',
     link: '/pages/employees',
@@ -25,6 +20,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Teams',
     icon: 'nb-grid-b-outline',
     link: '/pages/teams',
+  },
+  {
+    title: 'Roles',
+    icon: 'nb-e-commerce',
+    link: '/pages/roles',
   },
   {
     title: 'Computers',
@@ -37,7 +37,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/competence-centers',
   },
   {
-    title: 'PROJECTS',
+    title: 'WORKSPACE',
     group: true,
   },
   {
