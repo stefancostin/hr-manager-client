@@ -28,6 +28,7 @@ export class RolesTableSettings {
       code: {
         title: 'Code',
         type: 'string',
+        width: '100px'
       },
       name: {
         title: 'Name',
@@ -36,6 +37,8 @@ export class RolesTableSettings {
       is_management: {
         title: 'Management',
         type: 'boolean',
+        width: '60px',
+        valuePrepareFunction: (value) => value === 1 ? 'Y' : 'N',
       },
       description: {
         title: 'Description',

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NbDateService } from '@nebular/theme';
-
 import { SmartTableData } from '../../../@core/data/smart-table';
+import { NbDialogService } from '@nebular/theme';
+
+import { NotificationService } from '../../shared/services/notification.service';
+import { ConfirmationComponent } from '../../shared/components/confirmation.component';
 import { RolesTableSettings } from '../roles.settings';
+import { RoleService } from '../services/role.service';
 import { IRole, TransferObject } from '../role.model';
 import { Actions } from '../../shared/actions.enum';
 
@@ -23,19 +26,22 @@ export class RolesContainerComponent implements OnInit {
   tableConfig: RolesTableSettings = new RolesTableSettings();
   source: LocalDataSource = new LocalDataSource();
 
-  public constructor(private service: SmartTableData, protected dateService: NbDateService<Date>) {
-    // Data Source
-    const data = this.service.getData();
-    this.source.load(data);
-    // Table Configuration
-    this.settings = this.tableConfig.settings;
-  }
+  public constructor(
+    private roleService: RoleService,
+    private notificationService: NotificationService,
+    private dialogService: NbDialogService
+    ) { }
 
   public ngOnInit() {
+    // Table View
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
     this.transferData = {};
+    // Table Data Config
+    this.settings = this.tableConfig.settings;
+    // Table Data Source
+    this.getRoles();
   }
 
   /**
@@ -75,7 +81,6 @@ export class RolesContainerComponent implements OnInit {
    * Timeout included for Opacity Animation
    */
   public editItem(event): void {
-    // console.log(event.data);
     this.transferData = this.buildTransferObject(Actions.Edit, event.data);
 
     this.showTable = false;
@@ -88,15 +93,29 @@ export class RolesContainerComponent implements OnInit {
   }
 
   public deleteItem(): void {
+    this.onDeleteConfirm(event);
 
+    this.dialogService.open(ConfirmationComponent);
   }
 
   public onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
+    // if (window.confirm('Are you sure you want to delete?')) {
+    //   event.confirm.resolve();
+    // } else {
+    //   event.confirm.reject();
+    // }
+    // console.log('delete event', event);
+
+    
+  }
+
+  /**
+   * Receives roles list frome the server.
+   */
+  private getRoles(): void {
+    this.roleService.getRoles().subscribe(roles => {
+      this.source.load(roles.data);
+    });
   }
 
   /**

@@ -1,0 +1,10 @@
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Template Dialog</nb-card-header>
+    <nb-card-body>Are you sure you want to delete item?</nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Close Dialog</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+<!-- <button nbButton (click)="open(dialog)">Open Dialog</button> -->

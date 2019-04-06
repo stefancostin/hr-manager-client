@@ -18,6 +18,7 @@
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
     "start": "ng serve",
+    "start:local": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "build:prod": "npm run build -- --prod --aot",
     "test": "ng test",

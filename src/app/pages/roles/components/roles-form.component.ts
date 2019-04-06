@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { IRole, TransferObject } from '../role.model';
+import { NotificationService } from '../../shared/services/notification.service';
 import { RoleService } from '../services/role.service';
+import { IRole, TransferObject } from '../role.model';
 import { Actions } from '../../shared/actions.enum';
 
 @Component({
@@ -12,16 +13,20 @@ import { Actions } from '../../shared/actions.enum';
 })
 export class RolesFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
+  @Output() refreshData = new EventEmitter();
   @Input() transferData: any;
   // @Input() transferData: TransferObject;
   public action: string;
   public rolesForm: FormGroup;
   public data: IRole;
 
-  public constructor(private fb: FormBuilder, private roleService: RoleService) { }
+  public constructor(
+    private fb: FormBuilder,
+    private roleService: RoleService,
+    private notificationService: NotificationService
+    ) { }
 
   public ngOnInit(): void {
-    // console.log(this.transferData);
     this.checkActionOnInit();
   }
 
@@ -29,21 +34,43 @@ export class RolesFormComponent implements OnInit {
    * Creates a new entity of the Role type.
    * Event: Binds to the ADD ROLE button.
    */
-  public createEntity() {
-
+  public createEntity(): void {
+    this.roleService.addRole(this.rolesForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'role', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'role', this.transferData.formType, 0, message);
+    });
   }
 
   /**
    * Edits the current entity of type Role.
    * Event: Binds to the EDIT ROLE button.
    */
-  public editEntity() {
+  public editEntity(): void {
+    this.roleService.updateRole(this.rolesForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'role', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'role', this.transferData.formType, 0, message);
+    });
+  }
 
+  /**
+   * Updates data on the Table View before switching screen.
+   * Event: Binds to the EDIT button if EDIT is successful.
+   */
+  public updateDataSource(): void {
+    this.refreshData.emit();
   }
 
   /**
    * Leaves the Form View and navigates to Table View.
-   * Event: Binds to the CANCEL button.
+   * Event: Binds to the CANCEL or EDIT button.
    */
   public openTableView(): void {
     this.leave.emit();
@@ -62,11 +89,22 @@ export class RolesFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.retrieveData();
       this.createForm();
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
+  }
+
+  /**
+   * Retrieves data from server passed in through the
+   * transferData object, from the parent component.
+   *
+   * Used only for the 'EDIT' action.
+   */
+  private retrieveData(): void {
+    this.data = this.transferData.data;
   }
 
   /**
