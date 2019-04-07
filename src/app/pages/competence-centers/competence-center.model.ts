@@ -6,6 +6,6 @@ export interface ICompetenceCenter {
 }
 
 export class TransferObject {
-    formType: string;
+    formType: number;
     data?: ICompetenceCenter;
 }

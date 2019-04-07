@@ -6,6 +6,6 @@ export interface ITeam {
 }
 
 export class TransferObject {
-    formType: string;
+    formType: number;
     data?: ITeam;
 }

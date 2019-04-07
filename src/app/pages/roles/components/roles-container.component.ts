@@ -21,8 +21,7 @@ export class RolesContainerComponent implements OnInit {
   public tableView: boolean;
   public showTable: boolean;
   public showForm: boolean;
-  // public transferData: TransferObject;
-  public transferData: Object;
+  public transferData: TransferObject;
   private selectedItem: IRole;
 
   tableConfig: RolesTableSettings = new RolesTableSettings();
@@ -44,7 +43,7 @@ export class RolesContainerComponent implements OnInit {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
-    this.transferData = {};
+    this.transferData = new TransferObject();
     // Table Data Config
     this.settings = this.tableConfig.settings;
     // Table Data Source
@@ -153,8 +152,8 @@ export class RolesContainerComponent implements OnInit {
    * @param action = Actions enum <number>
    * @param data = Role Entity. Passed only on EDIT action
    */
-  private buildTransferObject(action: number, data?: Object): Object {
-    let transferObject: Object;
+  private buildTransferObject(action: number, data?: IRole): TransferObject {
+    let transferObject: TransferObject;
     switch (action) {
       case Actions.Create: {
         transferObject = {

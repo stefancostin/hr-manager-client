@@ -6,6 +6,6 @@ export interface IProject {
 }
 
 export class TransferObject {
-    formType: string;
+    formType: number;
     data?: IProject;
 }

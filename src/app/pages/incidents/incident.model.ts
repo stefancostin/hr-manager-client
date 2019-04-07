@@ -8,6 +8,6 @@ export interface IIncident {
 }
 
 export class TransferObject {
-    formType: string;
+    formType: number;
     data?: IIncident;
 }

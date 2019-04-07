@@ -7,6 +7,6 @@ export interface IRole {
 }
 
 export class TransferObject {
-    formType: string;
+    formType: number;
     data?: IRole;
 }
