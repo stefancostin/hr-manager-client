@@ -3,8 +3,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { NbDialogService } from '@nebular/theme';
 
-import { NotificationService } from '../../shared/services/notification.service';
 import { ConfirmationComponent } from '../../shared/components/confirmation.component';
+import { NotificationService } from '../../shared/services/notification.service';
 import { RolesTableSettings } from '../roles.settings';
 import { RoleService } from '../services/role.service';
 import { IRole, TransferObject } from '../role.model';
@@ -95,7 +95,7 @@ export class RolesContainerComponent implements OnInit {
   public deleteItem(): void {
     this.onDeleteConfirm(event);
 
-    this.dialogService.open(ConfirmationComponent);
+    const dialogRef = this.dialogService.open(ConfirmationComponent);
   }
 
   public onDeleteConfirm(event): void {
@@ -106,7 +106,7 @@ export class RolesContainerComponent implements OnInit {
     // }
     // console.log('delete event', event);
 
-    
+
   }
 
   /**
