@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-header>Delete</nb-card-header>
-  <nb-card-body>Are you sure you want to delete this item?</nb-card-body>
+  <nb-card-body>Are you sure you want to delete this {{ entity }}?</nb-card-body>
   <nb-card-footer>
     <button nbButton (click)="delete()" size="small" status="danger" class="mr-3">Delete</button>
     <button nbButton (click)="dialogRef.close()" size="small" class="btn btn-outline-secondary">Close</button>

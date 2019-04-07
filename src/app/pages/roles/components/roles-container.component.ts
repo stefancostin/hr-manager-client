@@ -4,6 +4,7 @@ import { SmartTableData } from '../../../@core/data/smart-table';
 import { NbDialogService } from '@nebular/theme';
 
 import { ConfirmationComponent } from '../../shared/components/confirmation.component';
+import { ConfirmationService } from '../../shared/services/confirmation.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { RolesTableSettings } from '../roles.settings';
 import { RoleService } from '../services/role.service';
@@ -22,6 +23,7 @@ export class RolesContainerComponent implements OnInit {
   public showForm: boolean;
   // public transferData: TransferObject;
   public transferData: Object;
+  private selectedItem: IRole;
 
   tableConfig: RolesTableSettings = new RolesTableSettings();
   source: LocalDataSource = new LocalDataSource();
@@ -29,8 +31,13 @@ export class RolesContainerComponent implements OnInit {
   public constructor(
     private roleService: RoleService,
     private notificationService: NotificationService,
+    private confirmationService: ConfirmationService,
     private dialogService: NbDialogService
-    ) { }
+    ) {
+      this.confirmationService.getRoleDeleteConfirm().subscribe(resp => {
+        this.onDeleteConfirm();
+      });
+    }
 
   public ngOnInit() {
     // Table View
@@ -92,21 +99,36 @@ export class RolesContainerComponent implements OnInit {
     }, 300);
   }
 
-  public deleteItem(): void {
-    this.onDeleteConfirm(event);
-
+  /**
+   * Method is binded to the delete button.
+   * It opens up the delete confirmation box.
+   *
+   * @param event = selected row
+   */
+  public deleteItem(event): void {
+    this.selectedItem = event.data;
     const dialogRef = this.dialogService.open(ConfirmationComponent);
   }
 
-  public onDeleteConfirm(event): void {
-    // if (window.confirm('Are you sure you want to delete?')) {
-    //   event.confirm.resolve();
-    // } else {
-    //   event.confirm.reject();
-    // }
-    // console.log('delete event', event);
-
-
+  /**
+   * Method deletes the selected row (entity).
+   *
+   * It is called from the constructor, after the component
+   * receives a confirmation from the confirmation-box, sent
+   * through the confirmation service (publish-subscribe).
+   */
+  private onDeleteConfirm(): void {
+    if (this.selectedItem !== undefined) {
+      this.roleService.deleteRole(this.selectedItem).subscribe(resp => {
+        this.getRoles();
+        this.notificationService.showToast('success', 'role', Actions.Delete, 3000);
+      }, err => {
+        const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+        this.notificationService.showToast('danger', 'role', Actions.Delete, 0, message);
+      });
+    } else {
+      console.error('This item could not be selected for deletion.');
+    }
   }
 
   /**
