@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { SmartTableData } from '../../../@core/data/smart-table';
 import { NbDialogService } from '@nebular/theme';
 
 import { ConfirmationComponent } from '../../shared/components/confirmation.component';
@@ -29,9 +28,9 @@ export class RolesContainerComponent implements OnInit {
 
   public constructor(
     private roleService: RoleService,
+    private dialogService: NbDialogService,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
-    private dialogService: NbDialogService
     ) {
       this.confirmationService.getRoleDeleteConfirm().subscribe(resp => {
         this.onDeleteConfirm();
@@ -131,7 +130,7 @@ export class RolesContainerComponent implements OnInit {
   }
 
   /**
-   * Receives roles list frome the server.
+   * Receives list from the server (index).
    */
   private getRoles(): void {
     this.roleService.getRoles().subscribe(roles => {

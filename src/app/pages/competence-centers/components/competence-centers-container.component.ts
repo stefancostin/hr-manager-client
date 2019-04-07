@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NbDateService } from '@nebular/theme';
+import { NbDialogService } from '@nebular/theme';
 
-import { SmartTableData } from '../../../@core/data/smart-table';
+import { ConfirmationComponent } from '../../shared/components/confirmation.component';
+import { ConfirmationService } from '../../shared/services/confirmation.service';
+import { NotificationService } from '../../shared/services/notification.service';
 import { CompetenceCentersTableSettings } from '../competence-centers.settings';
+import { CompetenceCenterService } from '../services/competence-center.service';
 import { ICompetenceCenter, TransferObject } from '../competence-center.model';
 import { Actions } from '../../shared/actions.enum';
 
 @Component({
-  selector: 'ngx-competence-centers-container',
+  selector: 'hr-competence-centers-container',
   templateUrl: './competence-centers-container.component.html',
   styleUrls: ['./competence-centers-container.component.scss']
 })
@@ -19,23 +22,29 @@ export class CompetenceCentersContainerComponent implements OnInit {
   public showForm: boolean;
   // public transferData: TransferObject;
   public transferData: Object;
+  private selectedItem: ICompetenceCenter;
 
   tableConfig: CompetenceCentersTableSettings = new CompetenceCentersTableSettings();
   source: LocalDataSource = new LocalDataSource();
 
-  public constructor(private service: SmartTableData, protected dateService: NbDateService<Date>) {
-    // Data Source
-    const data = this.service.getData();
-    this.source.load(data);
-    // Table Configuration
-    this.settings = this.tableConfig.settings;
-  }
+  public constructor(
+    private competenceCenterService: CompetenceCenterService,
+    private dialogService: NbDialogService,
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService
+    ) {
+      this.confirmationService.getCompetenceCenterDeleteConfirm().subscribe(resp => {
+        this.onDeleteConfirm();
+      });
+    }
 
   public ngOnInit() {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
     this.transferData = {};
+    this.settings = this.tableConfig.settings;
+    this.getCompetenceCenters();
   }
 
   /**
@@ -87,16 +96,45 @@ export class CompetenceCentersContainerComponent implements OnInit {
     }, 300);
   }
 
-  public deleteItem(): void {
-
+  /**
+   * Method is binded to the delete button.
+   * It opens up the delete confirmation box.
+   *
+   * @param event = selected row
+   */
+  public deleteItem(event): void {
+    this.selectedItem = event.data;
+    const dialogRef = this.dialogService.open(ConfirmationComponent);
   }
 
-  public onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+  /**
+   * Method deletes the selected row (entity).
+   *
+   * It is called from the constructor, after the component
+   * receives a confirmation from the confirmation-box, sent
+   * through the confirmation service (publish-subscribe).
+   */
+  private onDeleteConfirm(): void {
+    if (this.selectedItem !== undefined) {
+      this.competenceCenterService.deleteCompetenceCenter(this.selectedItem).subscribe(resp => {
+        this.getCompetenceCenters();
+        this.notificationService.showToast('success', 'competence center', Actions.Delete, 3000);
+      }, err => {
+        const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+        this.notificationService.showToast('danger', 'competence center', Actions.Delete, 0, message);
+      });
     } else {
-      event.confirm.reject();
+      console.error('This item could not be selected for deletion.');
     }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getCompetenceCenters(): void {
+    this.competenceCenterService.getCompetenceCenters().subscribe(competenceCenters => {
+      this.source.load(competenceCenters.data);
+    });
   }
 
   /**

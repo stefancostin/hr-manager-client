@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ICompetenceCenter, TransferObject } from '../competence-center.model';
+import { NotificationService } from '../../shared/services/notification.service';
 import { CompetenceCenterService } from '../services/competence-center.service';
+import { ICompetenceCenter, TransferObject } from '../competence-center.model';
 import { Actions } from '../../shared/actions.enum';
 
 @Component({
@@ -12,16 +13,20 @@ import { Actions } from '../../shared/actions.enum';
 })
 export class CompetenceCentersFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
+  @Output() refreshData = new EventEmitter();
   @Input() transferData: any;
   // @Input() transferData: TransferObject;
   public action: string;
   public competenceCentersForm: FormGroup;
   public data: ICompetenceCenter;
 
-  public constructor(private fb: FormBuilder, private competenceCenterService: CompetenceCenterService) { }
+  public constructor(
+    private fb: FormBuilder,
+    private competenceCenterService: CompetenceCenterService,
+    private notificationService: NotificationService
+    ) { }
 
   public ngOnInit(): void {
-    // console.log(this.transferData);
     this.checkActionOnInit();
   }
 
@@ -29,16 +34,38 @@ export class CompetenceCentersFormComponent implements OnInit {
    * Creates a new entity of the Competence Center type.
    * Event: Binds to the ADD COMPETENCE CENTER button.
    */
-  public createEntity() {
-
+  public createEntity(): void {
+    this.competenceCenterService.addCompetenceCenter(this.competenceCentersForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'competence center', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'competence center', this.transferData.formType, 0, message);
+    });
   }
 
   /**
    * Edits the current entity of type Competence Center.
    * Event: Binds to the EDIT COMPETENCE CENTER button.
    */
-  public editEntity() {
+  public editEntity(): void {
+    this.competenceCenterService.updateCompetenceCenter(this.competenceCentersForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'competence center', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'competence center', this.transferData.formType, 0, message);
+    });
+  }
 
+  /**
+   * Updates data on the Table View before switching screen.
+   * Event: Binds to the EDIT button if EDIT is successful.
+   */
+  public updateDataSource(): void {
+    this.refreshData.emit();
   }
 
   /**
@@ -62,11 +89,22 @@ export class CompetenceCentersFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.retrieveData();
       this.createForm();
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
+  }
+
+  /**
+   * Retrieves data from server passed in through the
+   * transferData object, from the parent component.
+   *
+   * Used only for the 'EDIT' action.
+   */
+  private retrieveData(): void {
+    this.data = this.transferData.data;
   }
 
   /**

@@ -14,8 +14,7 @@ import { Actions } from '../../shared/actions.enum';
 export class RolesFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
   @Output() refreshData = new EventEmitter();
-  @Input() transferData: any;
-  // @Input() transferData: TransferObject;
+  @Input() transferData: TransferObject;
   public action: string;
   public rolesForm: FormGroup;
   public data: IRole;

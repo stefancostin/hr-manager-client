@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../../shared/api.resource';
-import { IRole } from '../role.model';
 
 @Injectable({
   providedIn: 'root'
