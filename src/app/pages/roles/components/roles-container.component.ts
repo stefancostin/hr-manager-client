@@ -5,8 +5,8 @@ import { NbDialogService } from '@nebular/theme';
 import { ConfirmationComponent } from '../../shared/components/confirmation.component';
 import { ConfirmationService } from '../../shared/services/confirmation.service';
 import { NotificationService } from '../../shared/services/notification.service';
-import { RolesTableSettings } from '../roles.settings';
 import { RoleService } from '../services/role.service';
+import { RolesTableSettings } from '../roles.settings';
 import { IRole, TransferObject } from '../role.model';
 import { Actions } from '../../shared/actions.enum';
 

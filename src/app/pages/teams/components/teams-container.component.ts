@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NbDateService } from '@nebular/theme';
+import { NbDialogService } from '@nebular/theme';
 
-import { SmartTableData } from '../../../@core/data/smart-table';
+import { ConfirmationComponent } from '../../shared/components/confirmation.component';
+import { ConfirmationService } from '../../shared/services/confirmation.service';
+import { NotificationService } from '../../shared/services/notification.service';
+import { TeamService } from '../services/team.service';
 import { TeamsTableSettings } from '../teams.settings';
 import { ITeam, TransferObject } from '../team.model';
 import { Actions } from '../../shared/actions.enum';
@@ -17,25 +20,30 @@ export class TeamsContainerComponent implements OnInit {
   public tableView: boolean;
   public showTable: boolean;
   public showForm: boolean;
-  // public transferData: TransferObject;
-  public transferData: Object;
+  public transferData: TransferObject;
+  private selectedItem: ITeam;
 
   tableConfig: TeamsTableSettings = new TeamsTableSettings();
   source: LocalDataSource = new LocalDataSource();
 
-  public constructor(private service: SmartTableData, protected dateService: NbDateService<Date>) {
-    // Data Source
-    const data = this.service.getData();
-    this.source.load(data);
-    // Table Configuration
-    this.settings = this.tableConfig.settings;
-  }
+  public constructor(
+    private teamService: TeamService,
+    private dialogService: NbDialogService,
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService,
+    ) {
+      this.confirmationService.getTeamDeleteConfirm().subscribe(resp => {
+        this.onDeleteConfirm();
+      });
+    }
 
   public ngOnInit() {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
-    this.transferData = {};
+    this.transferData = new TransferObject();
+    this.settings = this.tableConfig.settings;
+    this.getTeams();
   }
 
   /**
@@ -75,7 +83,6 @@ export class TeamsContainerComponent implements OnInit {
    * Timeout included for Opacity Animation
    */
   public editItem(event): void {
-    // console.log(event.data);
     this.transferData = this.buildTransferObject(Actions.Edit, event.data);
 
     this.showTable = false;
@@ -87,16 +94,45 @@ export class TeamsContainerComponent implements OnInit {
     }, 300);
   }
 
-  public deleteItem(): void {
-
+  /**
+   * Method is binded to the delete button.
+   * It opens up the delete confirmation box.
+   *
+   * @param event = selected row
+   */
+  public deleteItem(event): void {
+    this.selectedItem = event.data;
+    const dialogRef = this.dialogService.open(ConfirmationComponent);
   }
 
-  public onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+  /**
+   * Method deletes the selected row (entity).
+   *
+   * It is called from the constructor, after the component
+   * receives a confirmation from the confirmation-box, sent
+   * through the confirmation service (publish-subscribe).
+   */
+  private onDeleteConfirm(): void {
+    if (this.selectedItem !== undefined) {
+      this.teamService.deleteTeam(this.selectedItem).subscribe(resp => {
+        this.getTeams();
+        this.notificationService.showToast('success', 'team', Actions.Delete, 3000);
+      }, err => {
+        const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+        this.notificationService.showToast('danger', 'team', Actions.Delete, 0, message);
+      });
     } else {
-      event.confirm.reject();
+      console.error('This item could not be selected for deletion.');
     }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getTeams(): void {
+    this.teamService.getTeams().subscribe(teams => {
+      this.source.load(teams.data);
+    });
   }
 
   /**
@@ -112,8 +148,8 @@ export class TeamsContainerComponent implements OnInit {
    * @param action = Actions enum <number>
    * @param data = Team Entity. Passed only on EDIT action
    */
-  private buildTransferObject(action: number, data?: Object): Object {
-    let transferObject: Object;
+  private buildTransferObject(action: number, data?: ITeam): TransferObject {
+    let transferObject: TransferObject;
     switch (action) {
       case Actions.Create: {
         transferObject = {

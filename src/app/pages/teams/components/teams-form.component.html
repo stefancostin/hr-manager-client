@@ -21,13 +21,8 @@
     <div class="form-group row">
       <label for="competenceCenter" class="col-sm-3 col-form-label">Competence Center</label>
       <div class="col-sm-9">
-        <nb-select id="competenceCenter" formControlName="competence_center_id" placeholder="Competence Center" outline status="primary">
-          <nb-option value="1">RO1</nb-option>
-          <nb-option value="2">RO2</nb-option>
-          <nb-option value="3">RO3</nb-option>
-          <nb-option value="4">RO4</nb-option>
-          <nb-option value="4">RO5</nb-option>
-          <nb-option value="4">RO6</nb-option>
+        <nb-select id="competenceCenter" formControlName="competence_center_id" [(selected)]="currentCompetenceCenter.id" placeholder="Competence Center" outline status="primary">
+          <nb-option *ngFor="let competenceCenter of competenceCenters" [value]="competenceCenter.id">{{ competenceCenter.code }}</nb-option>
         </nb-select>
       </div>
     </div>

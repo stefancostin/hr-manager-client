@@ -5,8 +5,8 @@ import { NbDialogService } from '@nebular/theme';
 import { ConfirmationComponent } from '../../shared/components/confirmation.component';
 import { ConfirmationService } from '../../shared/services/confirmation.service';
 import { NotificationService } from '../../shared/services/notification.service';
-import { CompetenceCentersTableSettings } from '../competence-centers.settings';
 import { CompetenceCenterService } from '../services/competence-center.service';
+import { CompetenceCentersTableSettings } from '../competence-centers.settings';
 import { ICompetenceCenter, TransferObject } from '../competence-center.model';
 import { Actions } from '../../shared/actions.enum';
 
@@ -20,8 +20,7 @@ export class CompetenceCentersContainerComponent implements OnInit {
   public tableView: boolean;
   public showTable: boolean;
   public showForm: boolean;
-  // public transferData: TransferObject;
-  public transferData: Object;
+  public transferData: TransferObject;
   private selectedItem: ICompetenceCenter;
 
   tableConfig: CompetenceCentersTableSettings = new CompetenceCentersTableSettings();
@@ -42,7 +41,7 @@ export class CompetenceCentersContainerComponent implements OnInit {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
-    this.transferData = {};
+    this.transferData = new TransferObject();
     this.settings = this.tableConfig.settings;
     this.getCompetenceCenters();
   }
@@ -150,8 +149,8 @@ export class CompetenceCentersContainerComponent implements OnInit {
    * @param action = Actions enum <number>
    * @param data = Competence Center Entity. Passed only on EDIT action
    */
-  private buildTransferObject(action: number, data?: Object): Object {
-    let transferObject: Object;
+  private buildTransferObject(action: number, data?: ICompetenceCenter): TransferObject {
+    let transferObject: TransferObject;
     switch (action) {
       case Actions.Create: {
         transferObject = {
