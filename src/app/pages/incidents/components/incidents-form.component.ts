@@ -62,11 +62,22 @@ export class IncidentsFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.retrieveData();
       this.createForm();
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
+  }
+
+  /**
+   * Retrieves data from server passed in through the
+   * transferData object, from the parent component.
+   *
+   * Used only for the 'EDIT' action.
+   */
+  private retrieveData(): void {
+    this.data = this.transferData.data;
   }
 
   /**

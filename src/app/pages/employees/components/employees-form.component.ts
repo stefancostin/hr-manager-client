@@ -102,6 +102,7 @@ export class EmployeesFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.retrieveData();
       this.createForm();
       this.populateEditForm();
     } else {

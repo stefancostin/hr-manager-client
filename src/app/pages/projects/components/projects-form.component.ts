@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { IProject, TransferObject } from '../project.model';
+import { NotificationService } from '../../shared/services/notification.service';
 import { ProjectService } from '../services/project.service';
+import { IProject, TransferObject } from '../project.model';
 import { Actions } from '../../shared/actions.enum';
 
 @Component({
@@ -12,16 +13,19 @@ import { Actions } from '../../shared/actions.enum';
 })
 export class ProjectsFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
-  @Input() transferData: any;
-  // @Input() transferData: TransferObject;
+  @Output() refreshData = new EventEmitter();
+  @Input() transferData: TransferObject;
   public action: string;
   public projectsForm: FormGroup;
   public data: IProject;
 
-  public constructor(private fb: FormBuilder, private projectService: ProjectService) { }
+  public constructor(
+    private fb: FormBuilder,
+    private projectService: ProjectService,
+    private notificationService: NotificationService
+    ) { }
 
   public ngOnInit(): void {
-    // console.log(this.transferData);
     this.checkActionOnInit();
   }
 
@@ -29,16 +33,38 @@ export class ProjectsFormComponent implements OnInit {
    * Creates a new entity of the Project type.
    * Event: Binds to the ADD PROJECT button.
    */
-  public createEntity() {
-
+  public createEntity(): void {
+    this.projectService.addProject(this.projectsForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'project', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'project', this.transferData.formType, 0, message);
+    });
   }
 
   /**
    * Edits the current entity of type Project.
    * Event: Binds to the EDIT PROJECT button.
    */
-  public editEntity() {
+  public editEntity(): void {
+    this.projectService.updateProject(this.projectsForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'project', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'project', this.transferData.formType, 0, message);
+    });
+  }
 
+  /**
+   * Updates data on the Table View before switching screen.
+   * Event: Binds to the EDIT button if EDIT is successful.
+   */
+  public updateDataSource(): void {
+    this.refreshData.emit();
   }
 
   /**
@@ -62,11 +88,22 @@ export class ProjectsFormComponent implements OnInit {
       this.createForm();
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
+      this.retrieveData();
       this.createForm();
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
+  }
+
+  /**
+   * Retrieves data from server passed in through the
+   * transferData object, from the parent component.
+   *
+   * Used only for the 'EDIT' action.
+   */
+  private retrieveData(): void {
+    this.data = this.transferData.data;
   }
 
   /**
