@@ -1,9 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { IEmployee, TransferObject } from '../employee.model';
+import { NotificationService } from '../../shared/services/notification.service';
 import { EmployeeService } from '../services/employee.service';
+import { IEmployee, TransferObject } from '../employee.model';
 import { Actions } from '../../shared/actions.enum';
+
+import { RoleService } from '../../roles/services/role.service';
+import { IRole, Role } from '../../roles/role.model';
+import { TeamService } from '../../teams/services/team.service';
+import { ITeam, Team } from '../../teams/team.model';
 
 @Component({
   selector: 'hr-employees-form',
@@ -12,33 +18,67 @@ import { Actions } from '../../shared/actions.enum';
 })
 export class EmployeesFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
+  @Output() refreshData = new EventEmitter();
   @Input() transferData: any;
   // @Input() transferData: TransferObject;
   public action: string;
   public employeesForm: FormGroup;
   public data: IEmployee;
+  public roles: IRole[];
+  public currentRole: IRole;
+  public teams: ITeam[];
+  public currentTeam: ITeam;
 
-  public constructor(private fb: FormBuilder, private employeeService: EmployeeService) { }
+  public constructor(
+    private fb: FormBuilder,
+    private employeeService: EmployeeService,
+    private roleService: RoleService,
+    private teamService: TeamService,
+    private notificationService: NotificationService
+    ) { }
 
   public ngOnInit(): void {
-    // console.log(this.transferData);
     this.checkActionOnInit();
+    this.getRoles();
+    this.getTeams();
   }
 
   /**
    * Creates a new entity of the Employee type.
    * Event: Binds to the ADD EMPLOYEE button.
    */
-  public createEntity() {
-
+  public createEntity(): void {
+    this.employeeService.addEmployee(this.employeesForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'employee', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'employee', this.transferData.formType, 0, message);
+    });
   }
 
   /**
    * Edits the current entity of type Employee.
    * Event: Binds to the EDIT EMPLOYEE button.
    */
-  public editEntity() {
+  public editEntity(): void {
+    this.employeeService.updateEmployee(this.employeesForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'employee', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'employee', this.transferData.formType, 0, message);
+    });
+  }
 
+  /**
+   * Updates data on the Table View before switching screen.
+   * Event: Binds to the EDIT button if EDIT is successful.
+   */
+  public updateDataSource(): void {
+    this.refreshData.emit();
   }
 
   /**
@@ -67,6 +107,80 @@ export class EmployeesFormComponent implements OnInit {
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
     }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getRoles(): void {
+    this.currentRole = new Role();
+
+    this.roleService.getRoles().subscribe(resp => {
+      this.roles = resp.data;
+
+      // On Edit
+      if (this.transferData.formType === Actions.Edit) {
+        this.findCurrentRole();
+      }
+    });
+  }
+
+  /**
+   * Iterates through the list received from the server
+   * to find what the current selected entity is.
+   */
+  private findCurrentRole(): void {
+    for (let i = 0; i < this.roles.length; i++) {
+      if (this.roles[i].id === this.data.role_id) {
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentRole = this.roles[i];
+        });
+      }
+    }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getTeams(): void {
+    this.currentTeam = new Team();
+
+    this.teamService.getTeams().subscribe(resp => {
+      this.teams = resp.data;
+
+      // On Edit
+      if (this.transferData.formType === Actions.Edit) {
+        this.findCurrentTeam();
+      }
+    });
+  }
+
+  /**
+   * Iterates through the list received from the server
+   * to find what the current selected entity is.
+   */
+  private findCurrentTeam(): void {
+    for (let i = 0; i < this.teams.length; i++) {
+      if (this.teams[i].id === this.data.team_id) {
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentTeam = this.teams[i];
+        });
+      }
+    }
+  }
+
+  /**
+   * Retrieves data from server passed in through the
+   * transferData object, from the parent component.
+   *
+   * Used only for the 'EDIT' action.
+   */
+  private retrieveData(): void {
+    this.data = this.transferData.data;
   }
 
   /**

@@ -19,7 +19,8 @@
   <nb-card-body *ngIf="!tableView" class="hide-view" [ngClass]="{'show-view' : showForm}">
     <hr-projects-form
       [transferData]="transferData"
-      (leave)="openTableView()">
+      (leave)="openTableView()"
+      (refreshData)="getProjects()">
     </hr-projects-form>
   </nb-card-body>
 

@@ -5,9 +5,9 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { TeamService } from '../services/team.service';
 import { ITeam, TransferObject } from '../team.model';
 import { Actions } from '../../shared/actions.enum';
+
 import { CompetenceCenterService } from '../../competence-centers/services/competence-center.service';
-import { ICompetenceCenter } from '../../competence-centers/competence-center.model';
-import { CompetenceCentersContainerComponent } from '../../competence-centers/components/competence-centers-container.component';
+import { ICompetenceCenter, CompetenceCenter } from '../../competence-centers/competence-center.model';
 
 @Component({
   selector: 'hr-teams-form',
@@ -107,6 +107,8 @@ export class TeamsFormComponent implements OnInit {
    * Receives list from the server (index).
    */
   private getCompetenceCenters(): void {
+    this.currentCompetenceCenter = new CompetenceCenter();
+
     this.competenceCenterService.getCompetenceCenters().subscribe(resp => {
       this.competenceCenters = resp.data;
 
@@ -124,7 +126,11 @@ export class TeamsFormComponent implements OnInit {
   private findCurrentCompetenceCenter(): void {
     for (let i = 0; i < this.competenceCenters.length; i++) {
       if (this.competenceCenters[i].id === this.data.competence_center_id) {
-        this.currentCompetenceCenter = this.competenceCenters[i];
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentCompetenceCenter = this.competenceCenters[i];
+        });
       }
     }
   }

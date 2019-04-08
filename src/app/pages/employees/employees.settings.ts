@@ -25,11 +25,11 @@ export class EmployeesTableSettings {
         editable: false,
         width: '30px',
       },
-      firstName: {
+      first_name: {
         title: 'First Name',
         type: 'string',
       },
-      lastName: {
+      last_name: {
         title: 'Last Name',
         type: 'string',
       },
@@ -37,15 +37,15 @@ export class EmployeesTableSettings {
         title: 'E-mail',
         type: 'string',
       },
-      role: {
+      role_id: {
         title: 'Role',
         type: 'string',
       },
-      team: {
+      team_id: {
         title: 'Team',
         type: 'string',
       },
-      hiringDate: {
+      hiring_date: {
         title: 'Hiring Date',
         type: 'number',
       },
