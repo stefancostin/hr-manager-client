@@ -1,9 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { IIncident, TransferObject } from '../incident.model';
+import { NotificationService } from '../../shared/services/notification.service';
 import { IncidentService } from '../services/incident.service';
+import { IIncident, TransferObject } from '../incident.model';
 import { Actions } from '../../shared/actions.enum';
+
+import { EmployeeService } from '../../employees/services/employee.service';
+import { IEmployee, Employee } from '../../employees/employee.model';
+import { ProjectService } from '../../projects/services/project.service';
+import { IProject, Project } from '../../projects/project.model';
 
 @Component({
   selector: 'hr-incidents-form',
@@ -12,33 +18,67 @@ import { Actions } from '../../shared/actions.enum';
 })
 export class IncidentsFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
+  @Output() refreshData = new EventEmitter();
   @Input() transferData: any;
   // @Input() transferData: TransferObject;
   public action: string;
   public incidentsForm: FormGroup;
   public data: IIncident;
+  public employees: IEmployee[];
+  public currentEmployee: IEmployee;
+  public projects: IProject[];
+  public currentProject: IProject;
 
-  public constructor(private fb: FormBuilder, private incidentService: IncidentService) { }
+  public constructor(
+    private fb: FormBuilder,
+    private incidentService: IncidentService,
+    private employeeService: EmployeeService,
+    private projectService: ProjectService,
+    private notificationService: NotificationService
+    ) { }
 
   public ngOnInit(): void {
-    // console.log(this.transferData);
     this.checkActionOnInit();
+    this.getEmployees();
+    this.getProjects();
   }
 
   /**
    * Creates a new entity of the Incident type.
    * Event: Binds to the ADD INCIDENT button.
    */
-  public createEntity() {
-
+  public createEntity(): void {
+    this.incidentService.addIncident(this.incidentsForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'incident', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'incident', this.transferData.formType, 0, message);
+    });
   }
 
   /**
    * Edits the current entity of type Incident.
    * Event: Binds to the EDIT INCIDENT button.
    */
-  public editEntity() {
+  public editEntity(): void {
+    this.incidentService.updateIncident(this.incidentsForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'incident', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'incident', this.transferData.formType, 0, message);
+    });
+  }
 
+  /**
+   * Updates data on the Table View before switching screen.
+   * Event: Binds to the EDIT button if EDIT is successful.
+   */
+  public updateDataSource(): void {
+    this.refreshData.emit();
   }
 
   /**
@@ -67,6 +107,70 @@ export class IncidentsFormComponent implements OnInit {
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
+    }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getEmployees(): void {
+    this.currentEmployee = new Employee();
+
+    this.employeeService.getEmployees().subscribe(resp => {
+      this.employees = resp.data;
+
+      // On Edit
+      if (this.transferData.formType === Actions.Edit) {
+        this.findCurrentEmployee();
+      }
+    });
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getProjects(): void {
+    this.currentProject = new Project();
+
+    this.projectService.getProjects().subscribe(resp => {
+      this.projects = resp.data;
+
+      // On Edit
+      if (this.transferData.formType === Actions.Edit) {
+        this.findCurrentProject();
+      }
+    });
+  }
+
+  /**
+   * Iterates through the list received from the server
+   * to find what the current selected entity is.
+   */
+  private findCurrentProject(): void {
+    for (let i = 0; i < this.projects.length; i++) {
+      if (this.projects[i].id === this.data.project_id) {
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentProject = this.projects[i];
+        });
+      }
+    }
+  }
+
+  /**
+   * Iterates through the list received from the server
+   * to find what the current selected entity is.
+   */
+  private findCurrentEmployee(): void {
+    for (let i = 0; i < this.employees.length; i++) {
+      if (this.employees[i].id === this.data.employee_id) {
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentEmployee = this.employees[i];
+        });
+      }
     }
   }
 

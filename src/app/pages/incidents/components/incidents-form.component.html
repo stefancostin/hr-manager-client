@@ -27,26 +27,16 @@
     <div class="form-group row">
       <label for="employee" class="col-sm-3 col-form-label">Employee</label>
       <div class="col-sm-9">
-        <nb-select id="employee" formControlName="employee_id" placeholder="Employee" outline status="primary">
-          <nb-option value="1">RO1</nb-option>
-          <nb-option value="2">RO2</nb-option>
-          <nb-option value="3">RO3</nb-option>
-          <nb-option value="4">RO4</nb-option>
-          <nb-option value="4">RO5</nb-option>
-          <nb-option value="4">RO6</nb-option>
+        <nb-select id="employee" formControlName="employee_id" [(selected)]="currentEmployee.id" placeholder="Employee" outline status="primary">
+          <nb-option *ngFor="let employee of employees" [value]="employee.id">{{ employee.first_name }} {{ employee.last_name }}</nb-option>
         </nb-select>
       </div>
     </div>
     <div class="form-group row">
       <label for="project" class="col-sm-3 col-form-label">Project</label>
       <div class="col-sm-9">
-        <nb-select id="project" formControlName="project_id" placeholder="Project" outline status="primary">
-          <nb-option value="1">RO1</nb-option>
-          <nb-option value="2">RO2</nb-option>
-          <nb-option value="3">RO3</nb-option>
-          <nb-option value="4">RO4</nb-option>
-          <nb-option value="4">RO5</nb-option>
-          <nb-option value="4">RO6</nb-option>
+        <nb-select id="project" formControlName="project_id" [(selected)]="currentProject.id" placeholder="Project" outline status="primary">
+          <nb-option *ngFor="let project of projects" [value]="project.id">{{ project.code }}</nb-option>
         </nb-select>
       </div>
     </div>

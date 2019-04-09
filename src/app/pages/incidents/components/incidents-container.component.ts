@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NbDateService } from '@nebular/theme';
+import { NbDialogService } from '@nebular/theme';
 
-import { SmartTableData } from '../../../@core/data/smart-table';
+import { ConfirmationComponent } from '../../shared/components/confirmation.component';
+import { ConfirmationService } from '../../shared/services/confirmation.service';
+import { NotificationService } from '../../shared/services/notification.service';
+import { IncidentService } from '../services/incident.service';
 import { IncidentsTableSettings } from '../incidents.settings';
 import { IIncident, TransferObject } from '../incident.model';
 import { Actions } from '../../shared/actions.enum';
@@ -17,25 +20,30 @@ export class IncidentsContainerComponent implements OnInit {
   public tableView: boolean;
   public showTable: boolean;
   public showForm: boolean;
-  // public transferData: TransferObject;
-  public transferData: Object;
+  public transferData: TransferObject;
+  private selectedItem: IIncident;
 
   tableConfig: IncidentsTableSettings = new IncidentsTableSettings();
   source: LocalDataSource = new LocalDataSource();
 
-  public constructor(private service: SmartTableData, protected dateService: NbDateService<Date>) {
-    // Data Source
-    const data = this.service.getData();
-    this.source.load(data);
-    // Table Configuration
-    this.settings = this.tableConfig.settings;
+  public constructor(
+    private incidentService: IncidentService,
+    private dialogService: NbDialogService,
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService,
+    ) {
+      this.confirmationService.getIncidentDeleteConfirm().subscribe(resp => {
+        this.onDeleteConfirm();
+      });
   }
 
   public ngOnInit() {
     this.tableView = true;
     this.showTable = true;
     this.showForm = false;
-    this.transferData = {};
+    this.transferData = new TransferObject();
+    this.settings = this.tableConfig.settings;
+    this.getIncidents();
   }
 
   /**
@@ -75,7 +83,6 @@ export class IncidentsContainerComponent implements OnInit {
    * Timeout included for Opacity Animation
    */
   public editItem(event): void {
-    // console.log(event.data);
     this.transferData = this.buildTransferObject(Actions.Edit, event.data);
 
     this.showTable = false;
@@ -87,16 +94,45 @@ export class IncidentsContainerComponent implements OnInit {
     }, 300);
   }
 
-  public deleteItem(): void {
-
+  /**
+   * Method is binded to the delete button.
+   * It opens up the delete confirmation box.
+   *
+   * @param event = selected row
+   */
+  public deleteItem(event): void {
+    this.selectedItem = event.data;
+    const dialogRef = this.dialogService.open(ConfirmationComponent);
   }
 
-  public onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+  /**
+   * Method deletes the selected row (entity).
+   *
+   * It is called from the constructor, after the component
+   * receives a confirmation from the confirmation-box, sent
+   * through the confirmation service (publish-subscribe).
+   */
+  private onDeleteConfirm(): void {
+    if (this.selectedItem !== undefined) {
+      this.incidentService.deleteIncident(this.selectedItem).subscribe(resp => {
+        this.getIncidents();
+        this.notificationService.showToast('success', 'incident', Actions.Delete, 3000);
+      }, err => {
+        const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+        this.notificationService.showToast('danger', 'incident', Actions.Delete, 0, message);
+      });
     } else {
-      event.confirm.reject();
+      console.error('This item could not be selected for deletion.');
     }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getIncidents(): void {
+    this.incidentService.getIncidents().subscribe(incidents => {
+      this.source.load(incidents.data);
+    });
   }
 
   /**
@@ -112,8 +148,8 @@ export class IncidentsContainerComponent implements OnInit {
    * @param action = Actions enum <number>
    * @param data = Incident Entity. Passed only on EDIT action
    */
-  private buildTransferObject(action: number, data?: Object): Object {
-    let transferObject: Object;
+  private buildTransferObject(action: number, data?: IIncident): TransferObject {
+    let transferObject: TransferObject;
     switch (action) {
       case Actions.Create: {
         transferObject = {
