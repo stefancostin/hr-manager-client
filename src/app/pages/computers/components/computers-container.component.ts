@@ -125,7 +125,7 @@ export class ComputersContainerComponent implements OnInit {
       console.error('This item could not be selected for deletion.');
     }
   }
-  
+
   /**
    * Receives list from the server (index).
    */

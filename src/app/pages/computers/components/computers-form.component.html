@@ -33,11 +33,9 @@
     <div class="form-group row">
       <label for="employee" class="col-sm-3 col-form-label">Employee</label>
       <div class="col-sm-9">
-        <nb-select id="employee" formControlName="employee_id" placeholder="Employee" outline status="primary">
-          <nb-option value="1">Option 1</nb-option>
-          <nb-option value="2">Option 2</nb-option>
-          <nb-option value="3">Option 3</nb-option>
-          <nb-option value="4">Option 4</nb-option>
+        <nb-select id="employee" formControlName="employee_id" [(selected)]="currentEmployee.id" placeholder="Employee" outline status="primary">
+          <nb-option value="null">None</nb-option>
+          <nb-option *ngFor="let employee of employees" [value]="employee.id">{{ employee.first_name }} {{ employee.last_name }}</nb-option>
         </nb-select>
       </div>
     </div>

@@ -1,9 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { IComputer, TransferObject } from '../computer.model';
+import { NotificationService } from '../../shared/services/notification.service';
 import { ComputerService } from '../services/computer.service';
+import { IComputer, TransferObject } from '../computer.model';
 import { Actions } from '../../shared/actions.enum';
+
+import { EmployeeService } from '../../employees/services/employee.service';
+import { IEmployee, Employee } from '../../employees/employee.model';
+
 
 @Component({
   selector: 'hr-computers-form',
@@ -12,33 +17,63 @@ import { Actions } from '../../shared/actions.enum';
 })
 export class ComputersFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
+  @Output() refreshData = new EventEmitter();
   @Input() transferData: any;
   // @Input() transferData: TransferObject;
   public action: string;
   public computersForm: FormGroup;
   public data: IComputer;
+  public employees: IEmployee[];
+  public currentEmployee: IEmployee;
 
-  public constructor(private fb: FormBuilder, private computerService: ComputerService) { }
+  public constructor(
+    private fb: FormBuilder,
+    private computerService: ComputerService,
+    private employeeService: EmployeeService,
+    private notificationService: NotificationService
+    ) { }
 
   public ngOnInit(): void {
-    // console.log(this.transferData);
     this.checkActionOnInit();
+    this.getEmployees();
   }
 
   /**
    * Creates a new entity of the Computer type.
    * Event: Binds to the ADD COMPUTER button.
    */
-  public createEntity() {
-
+  public createEntity(): void {
+    this.computerService.addComputer(this.computersForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'computer', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'computer', this.transferData.formType, 0, message);
+    });
   }
 
   /**
    * Edits the current entity of type Computer.
    * Event: Binds to the EDIT COMPUTER button.
    */
-  public editEntity() {
+  public editEntity(): void {
+    this.computerService.updateComputer(this.computersForm.value).subscribe(resp => {
+      this.updateDataSource();
+      this.notificationService.showToast('success', 'computer', this.transferData.formType, 3000);
+      this.openTableView();
+    }, err => {
+      const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
+      this.notificationService.showToast('danger', 'computer', this.transferData.formType, 0, message);
+    });
+  }
 
+  /**
+   * Updates data on the Table View before switching screen.
+   * Event: Binds to the EDIT button if EDIT is successful.
+   */
+  public updateDataSource(): void {
+    this.refreshData.emit();
   }
 
   /**
@@ -67,6 +102,38 @@ export class ComputersFormComponent implements OnInit {
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
+    }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getEmployees(): void {
+    this.currentEmployee = new Employee();
+
+    this.employeeService.getEmployees().subscribe(resp => {
+      this.employees = resp.data;
+
+      // On Edit
+      if (this.transferData.formType === Actions.Edit) {
+        this.findCurrentCompetenceCenter();
+      }
+    });
+  }
+
+  /**
+   * Iterates through the list received from the server
+   * to find what the current selected entity is.
+   */
+  private findCurrentCompetenceCenter(): void {
+    for (let i = 0; i < this.employees.length; i++) {
+      if (this.employees[i].id === this.data.employee_id) {
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentEmployee = this.employees[i];
+        });
+      }
     }
   }
 

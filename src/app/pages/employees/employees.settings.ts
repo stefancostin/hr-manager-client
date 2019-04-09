@@ -37,13 +37,19 @@ export class EmployeesTableSettings {
         title: 'E-mail',
         type: 'string',
       },
-      role_id: {
+      role: {
         title: 'Role',
         type: 'string',
+        valuePrepareFunction: (role) => {
+          return role.code;
+        }
       },
-      team_id: {
+      team: {
         title: 'Team',
         type: 'string',
+        valuePrepareFunction: (team) => {
+          return team.code;
+        }
       },
       hiring_date: {
         title: 'Hiring Date',

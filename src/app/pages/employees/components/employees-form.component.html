@@ -7,15 +7,15 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+      <label for="first_name" class="col-sm-3 col-form-label">First Name</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" id="firstName" formControlName="firstName" placeholder="First Name">
+        <input type="text" class="form-control" id="first_name" formControlName="first_name" placeholder="First Name">
       </div>
     </div>
     <div class="form-group row">
-      <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+      <label for="last_name" class="col-sm-3 col-form-label">Last Name</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="Last Name">
+        <input type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="Last Name">
       </div>
     </div>
     <div class="form-group row">
@@ -25,16 +25,16 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="hiringDate" class="col-sm-3 col-form-label">Hiring Date</label>
+      <label for="hiring_date" class="col-sm-3 col-form-label">Hiring Date</label>
       <div class="col-sm-9">
-        <input nbInput id="hiringDate" formControlName="hiringDate" placeholder="Hiring Date" [nbDatepicker]="picker">
+        <input nbInput id="hiring_date" formControlName="hiring_date" placeholder="Hiring Date" [nbDatepicker]="picker">
         <nb-datepicker #picker format="dd\MM\yyyy"></nb-datepicker>
       </div>
     </div>
     <div class="form-group row">
       <label for="role" class="col-sm-3 col-form-label">Role</label>
       <div class="col-sm-9">
-        <nb-select id="role" formControlName="role" [(selected)]="currentRole.id" placeholder="Role" outline status="primary">
+        <nb-select id="role" formControlName="role_id" [(selected)]="currentRole.id" placeholder="Role" outline status="primary">
           <nb-option *ngFor="let role of roles" [value]="role.id">{{ role.code }}</nb-option>
         </nb-select>
       </div>
@@ -42,7 +42,7 @@
     <div class="form-group row">
       <label for="team" class="col-sm-3 col-form-label">Team</label>
       <div class="col-sm-9">
-        <nb-select id="team" formControlName="team" [(selected)]="currentTeam.id" placeholder="Team" outline status="primary">
+        <nb-select id="team" formControlName="team_id" [(selected)]="currentTeam.id" placeholder="Team" outline status="primary">
           <nb-option *ngFor="let team of teams" [value]="team.id">{{ team.code }}</nb-option>
         </nb-select>
       </div>
