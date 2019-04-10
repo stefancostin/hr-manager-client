@@ -30,4 +30,9 @@ export class ProjectService {
     return this.http.delete(url);
   }
 
+  public getProjectMembers(projectId): Observable<any> {
+    const url: string = `${BASE_URL}/project-members/${projectId}`;
+    return this.http.get(url);
+  }
+
 }

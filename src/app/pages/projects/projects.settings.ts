@@ -28,6 +28,7 @@ export class ProjectsTableSettings {
       code: {
         title: 'Code',
         type: 'string',
+        width: '100px'
       },
       name: {
         title: 'Name',

@@ -28,6 +28,7 @@ export class IncidentsFormComponent implements OnInit {
   public currentEmployee: IEmployee;
   public projects: IProject[];
   public currentProject: IProject;
+  private isProjectSelected: boolean;
 
   public constructor(
     private fb: FormBuilder,
@@ -39,8 +40,10 @@ export class IncidentsFormComponent implements OnInit {
 
   public ngOnInit(): void {
     this.checkActionOnInit();
-    this.getEmployees();
     this.getProjects();
+    this.checkProjectSelection();
+    // Change this in EDIT and call it when user changes the selected project
+    // this.getEmployees();
   }
 
   /**
@@ -112,18 +115,43 @@ export class IncidentsFormComponent implements OnInit {
 
   /**
    * Receives list from the server (index).
+   *
+   * It runs only when a project is selected,
+   * and then it fetches all the employees that
+   * are assigend to the selected project.
    */
   private getEmployees(): void {
     this.currentEmployee = new Employee();
+    this.employees = [new Employee()];
 
-    this.employeeService.getEmployees().subscribe(resp => {
-      this.employees = resp.data;
+    // Check if any project is selected first
+    if (this.incidentsForm.controls.project_id.value) {
+      this.projectService.getProjectMembers(this.incidentsForm.controls.project_id.value).subscribe(resp => {
+        this.employees = resp.data;
+        console.log('here', resp.data);
 
-      // On Edit
-      if (this.transferData.formType === Actions.Edit) {
-        this.findCurrentEmployee();
+        // On Edit
+        if (this.transferData.formType === Actions.Edit) {
+          this.findCurrentEmployee();
+        }
+      });
+    }
+  }
+
+  /**
+   * Iterates through the list received from the server
+   * to find what the current selected entity is.
+   */
+  private findCurrentEmployee(): void {
+    for (let i = 0; i < this.employees.length; i++) {
+      if (this.employees[i].id === this.data.employee_id) {
+
+        // Queue it for the next event loop
+        setTimeout(() => {
+          this.currentEmployee = this.employees[i];
+        });
       }
-    });
+    }
   }
 
   /**
@@ -159,18 +187,16 @@ export class IncidentsFormComponent implements OnInit {
   }
 
   /**
-   * Iterates through the list received from the server
-   * to find what the current selected entity is.
+   * Checks if a project is selected in order to call the service
+   * that retrieves all the employees assigned to the project.
    */
-  private findCurrentEmployee(): void {
-    for (let i = 0; i < this.employees.length; i++) {
-      if (this.employees[i].id === this.data.employee_id) {
-
-        // Queue it for the next event loop
-        setTimeout(() => {
-          this.currentEmployee = this.employees[i];
-        });
-      }
+  private checkProjectSelection(): void {
+    this.isProjectSelected = !!this.incidentsForm.controls.project_id.value;
+    if (this.isProjectSelected) {
+      this.getEmployees();
+    } else {
+      this.currentEmployee = new Employee();
+      this.employees = [new Employee()];
     }
   }
 
@@ -196,8 +222,11 @@ export class IncidentsFormComponent implements OnInit {
       code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
       subject: [null, [Validators.required, Validators.maxLength(25)]],
       description: [null, [Validators.required, Validators.maxLength(200)]],
-      employee_id: [null, [Validators.required]],
-      project_id: [null, [Validators.required]]
+      project_id: [null, [Validators.required]],
+      employee_id: [
+        {value: null, disabled: this.isProjectSelected},
+        [Validators.required]
+      ],
     });
   }
 
@@ -213,8 +242,8 @@ export class IncidentsFormComponent implements OnInit {
       code: this.data.code,
       subject: this.data.subject,
       description: this.data.description,
+      project_id: this.data.project_id,
       employee_id: this.data.employee_id,
-      project_id: this.data.project_id
     });
   }
 

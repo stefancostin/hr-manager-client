@@ -28,6 +28,7 @@ export class CompetenceCentersTableSettings {
         code: {
           title: 'Code',
           type: 'string',
+          width: '100px'
         },
         city: {
           title: 'City',

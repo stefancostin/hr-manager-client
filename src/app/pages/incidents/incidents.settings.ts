@@ -28,22 +28,30 @@ export class IncidentsTableSettings {
       code: {
         title: 'Code',
         type: 'string',
+        width: '100px'
       },
       subject: {
-        subject: 'Subject',
+        title: 'Subject',
         type: 'string',
       },
       description: {
         title: 'Description',
         type: 'string',
       },
-      project_id: {
+      project: {
         title: 'Project',
         type: 'string',
+        width: '100px',
+        valuePrepareFunction: (project) => {
+          return project.code;
+        }
       },
-      employee_id: {
+      employee: {
         title: 'Assigned To',
         type: 'string',
+        valuePrepareFunction: (employee) => {
+          return `${employee.first_name} ${employee.last_name}`;
+        }
       },
     },
   };

@@ -28,14 +28,19 @@ export class TeamsTableSettings {
       code: {
         title: 'Code',
         type: 'string',
+        width: '100px'
       },
       name: {
         title: 'Name',
         type: 'string',
       },
-      competence_center_id: {
+      competence_center: {
         title: 'Competence Center',
         type: 'string',
+        width: '175px',
+        valuePrepareFunction: (competenceCenter) => {
+          return competenceCenter.code;
+        }
       },
     },
   };
