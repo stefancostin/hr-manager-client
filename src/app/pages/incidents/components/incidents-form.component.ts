@@ -128,7 +128,6 @@ export class IncidentsFormComponent implements OnInit {
     if (this.incidentsForm.controls.project_id.value) {
       this.projectService.getProjectMembers(this.incidentsForm.controls.project_id.value).subscribe(resp => {
         this.employees = resp.data;
-        console.log('here', resp.data);
 
         // On Edit
         if (this.transferData.formType === Actions.Edit) {
@@ -149,6 +148,7 @@ export class IncidentsFormComponent implements OnInit {
         // Queue it for the next event loop
         setTimeout(() => {
           this.currentEmployee = this.employees[i];
+          console.log('currentEmployee', this.currentEmployee);
         });
       }
     }
@@ -194,9 +194,11 @@ export class IncidentsFormComponent implements OnInit {
     this.isProjectSelected = !!this.incidentsForm.controls.project_id.value;
     if (this.isProjectSelected) {
       this.getEmployees();
+      this.incidentsForm.controls.employee_id.enable();
     } else {
       this.currentEmployee = new Employee();
       this.employees = [new Employee()];
+      this.incidentsForm.controls.employee_id.disable();
     }
   }
 
