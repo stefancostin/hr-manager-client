@@ -42,6 +42,22 @@ export class TeamsTableSettings {
           return competenceCenter.code;
         }
       },
+      projects: {
+        title: 'Projects',
+        type: 'string',
+        width: '175px',
+        valuePrepareFunction: (projectCollection) => {
+          if (projectCollection.length) {
+            let projects: string = '';
+            for (let i = 0; i < projectCollection.length; i++) {
+              projects += projectCollection[i].code.toLocaleUpperCase() + ', ';
+            }
+            projects.toLocaleUpperCase();
+            return projects.slice(0, -2);
+          }
+          return null;
+        }
+      },
     },
   };
 }

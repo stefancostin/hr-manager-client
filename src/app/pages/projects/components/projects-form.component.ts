@@ -6,6 +6,9 @@ import { ProjectService } from '../services/project.service';
 import { IProject, TransferObject } from '../project.model';
 import { Actions } from '../../shared/actions.enum';
 
+import { TeamService } from '../../teams/services/team.service';
+import { ITeam, Team } from '../../teams/team.model';
+
 @Component({
   selector: 'hr-projects-form',
   templateUrl: './projects-form.component.html',
@@ -18,15 +21,20 @@ export class ProjectsFormComponent implements OnInit {
   public action: string;
   public projectsForm: FormGroup;
   public data: IProject;
+  public teams: ITeam[];
+  public currentTeams: ITeam[];
+  public teamsIdList: Array<number>;
 
   public constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
+    private teamService: TeamService,
     private notificationService: NotificationService
     ) { }
 
   public ngOnInit(): void {
     this.checkActionOnInit();
+    this.getTeams();
   }
 
   /**
@@ -49,6 +57,7 @@ export class ProjectsFormComponent implements OnInit {
    * Event: Binds to the EDIT PROJECT button.
    */
   public editEntity(): void {
+    console.log(this.projectsForm.value)
     this.projectService.updateProject(this.projectsForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'project', this.transferData.formType, 3000);
@@ -89,10 +98,45 @@ export class ProjectsFormComponent implements OnInit {
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
       this.retrieveData();
+      this.setCurrentTeams();
       this.createForm();
       this.populateEditForm();
     } else {
       console.error('Action type not defined. "Edit" or "Create" not found inside transfer object.');
+    }
+  }
+
+  /**
+   * Receives list from the server (index).
+   */
+  private getTeams(): void {
+    this.teamService.getTeams().subscribe(resp => {
+      this.teams = resp.data;
+      this.setTeamsOnEditForm();
+    });
+  }
+
+  /**
+   * Receives list from the TransferObject.
+   * Called inside retrieveData() method.
+   */
+  private setCurrentTeams(): void {
+    this.currentTeams = [];
+    this.teamsIdList = [];
+
+    if (this.data.teams.length) {
+        this.currentTeams = this.data.teams;
+        this.setTeamsIdList();
+    }
+  }
+
+  /**
+   * Process teams list into a collection of
+   * ids that will be se stored on the server.
+   */
+  private setTeamsIdList(): void {
+    for (let i = 0; i < this.currentTeams.length; i++) {
+      this.teamsIdList.push(this.currentTeams[i].id);
     }
   }
 
@@ -116,8 +160,8 @@ export class ProjectsFormComponent implements OnInit {
     this.projectsForm = this.fb.group({
       id: [null],
       code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
-      name: [null, [Validators.required, Validators.maxLength(25)]],
-      team_id: [null, [Validators.required]]
+      name: [null, [Validators.required, Validators.maxLength(50)]],
+      teams: [null]
     });
   }
 
@@ -132,7 +176,21 @@ export class ProjectsFormComponent implements OnInit {
       id: this.data.id,
       code: this.data.code,
       name: this.data.name,
-      team_id: this.data.team_id
+      teams: this.teamsIdList
+    });
+  }
+
+    /**
+   * Called asynchronously to update the
+   * selected project checkboxes.
+   *
+   * Called inside setCurrentTeams()
+   */
+  private setTeamsOnEditForm(): void {
+    setTimeout(() => {
+      this.projectsForm.patchValue({
+        teams: this.teamsIdList
+      });
     });
   }
 

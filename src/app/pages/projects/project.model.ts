@@ -3,6 +3,7 @@ export interface IProject {
     team_id?: number;
     code: string;
     name: string;
+    teams?: any;
 }
 
 export class Project implements IProject {

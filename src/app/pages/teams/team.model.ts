@@ -3,6 +3,7 @@ export interface ITeam {
     competence_center_id: number;
     code: string;
     name: string;
+    projects?: any;
 }
 
 export class Team implements ITeam {
@@ -10,12 +11,14 @@ export class Team implements ITeam {
     competence_center_id: number;
     code: string;
     name: string;
+    projects?: any;
 
     public constructor() {
         this.id = null;
         this.competence_center_id = null;
         this.code = null;
         this.name = null;
+        this.projects = [];
     }
 }
 

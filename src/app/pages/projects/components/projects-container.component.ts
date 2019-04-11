@@ -153,7 +153,8 @@ export class ProjectsContainerComponent implements OnInit {
     switch (action) {
       case Actions.Create: {
         transferObject = {
-          'formType': action
+          'formType': action,
+          'data': data
         };
         return transferObject;
       }

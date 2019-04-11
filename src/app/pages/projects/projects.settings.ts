@@ -34,9 +34,20 @@ export class ProjectsTableSettings {
         title: 'Name',
         type: 'string',
       },
-      team_id: {
+      teams: {
         title: 'Teams',
         type: 'string',
+        valuePrepareFunction: (teamCollection) => {
+          if (teamCollection.length) {
+            let teams: string = '';
+            for (let i = 0; i < teamCollection.length; i++) {
+              teams += teamCollection[i].code.toLocaleUpperCase() + ', ';
+            }
+            teams.toLocaleUpperCase();
+            return teams.slice(0, -2);
+          }
+          return null;
+        }
       },
     },
   };

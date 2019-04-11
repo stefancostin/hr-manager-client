@@ -6,6 +6,7 @@ export interface IComputer {
     cpu: string;
     ram: string;
     hdd: string;
+    employee?: any;
 }
 
 export class Computer implements IComputer {
@@ -16,6 +17,7 @@ export class Computer implements IComputer {
     cpu: string;
     ram: string;
     hdd: string;
+    employee: any;
 
     public constructor() {
         this.id = null;
@@ -25,6 +27,7 @@ export class Computer implements IComputer {
         this.cpu = null;
         this.ram = null;
         this.hdd = null;
+        this.employee = {};
     }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { NotificationService } from '../../shared/services/notification.service';
@@ -18,8 +18,7 @@ import { IEmployee, Employee } from '../../employees/employee.model';
 export class ComputersFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
   @Output() refreshData = new EventEmitter();
-  @Input() transferData: any;
-  // @Input() transferData: TransferObject;
+  @Input() transferData: TransferObject;
   public action: string;
   public computersForm: FormGroup;
   public data: IComputer;
@@ -30,12 +29,14 @@ export class ComputersFormComponent implements OnInit {
     private fb: FormBuilder,
     private computerService: ComputerService,
     private employeeService: EmployeeService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
     ) { }
 
   public ngOnInit(): void {
     this.checkActionOnInit();
     this.getEmployees();
+    this.cdr.detectChanges();
   }
 
   /**
@@ -43,7 +44,6 @@ export class ComputersFormComponent implements OnInit {
    * Event: Binds to the ADD COMPUTER button.
    */
   public createEntity(): void {
-    console.log(this.computersForm.value);
     this.computerService.addComputer(this.computersForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'computer', this.transferData.formType, 3000);
@@ -114,7 +114,6 @@ export class ComputersFormComponent implements OnInit {
 
     this.employeeService.getEmployeesWithoutComputer().subscribe(resp => {
       this.employees = resp.data;
-      console.log(this.employees);
 
       // On Edit
       if (this.transferData.formType === Actions.Edit) {
@@ -155,10 +154,10 @@ export class ComputersFormComponent implements OnInit {
       id: [null],
       code: [null, [Validators.required, Validators.maxLength(10), Validators.pattern('^[a-zA-Z0-9]*$')]],
       employee_id: [null, [Validators.required]],
-      operating_system: [null, [Validators.required, Validators.maxLength(25), Validators.pattern('^[a-zA-Z0-9]*$')]],
-      cpu: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
-      ram: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
-      hdd: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      operating_system: [null, [Validators.required, Validators.maxLength(25)]],
+      cpu: [null, [Validators.required, Validators.maxLength(6)]],
+      ram: [null, [Validators.required, Validators.maxLength(6)]],
+      hdd: [null, [Validators.required, Validators.maxLength(6)]],
     });
   }
 

@@ -8,6 +8,8 @@ import { Actions } from '../../shared/actions.enum';
 
 import { CompetenceCenterService } from '../../competence-centers/services/competence-center.service';
 import { ICompetenceCenter, CompetenceCenter } from '../../competence-centers/competence-center.model';
+import { ProjectService } from '../../projects/services/project.service';
+import { IProject } from '../../projects/project.model';
 
 @Component({
   selector: 'hr-teams-form',
@@ -23,10 +25,14 @@ export class TeamsFormComponent implements OnInit {
   public data: ITeam;
   public competenceCenters: ICompetenceCenter[];
   public currentCompetenceCenter: ICompetenceCenter;
+  public projects: IProject[];
+  public currentProjects: IProject[];
+  public projectsIdList: Array<number>;
 
   public constructor(
   private fb: FormBuilder,
   private teamService: TeamService,
+  private projectService: ProjectService,
   private competenceCenterService: CompetenceCenterService,
   private notificationService: NotificationService
   ) { }
@@ -34,6 +40,7 @@ export class TeamsFormComponent implements OnInit {
   public ngOnInit(): void {
     this.checkActionOnInit();
     this.getCompetenceCenters();
+    this.getProjects();
   }
 
   /**
@@ -96,6 +103,7 @@ export class TeamsFormComponent implements OnInit {
     } else if (this.transferData.formType === Actions.Edit) {
       this.action = 'EDIT';
       this.retrieveData();
+      this.setCurrentProjects();
       this.createForm();
       this.populateEditForm();
     } else {
@@ -136,6 +144,40 @@ export class TeamsFormComponent implements OnInit {
   }
 
   /**
+   * Receives list from the server (index).
+   */
+  private getProjects(): void {
+    this.projectService.getProjects().subscribe(resp => {
+      this.projects = resp.data;
+      this.setProjectsOnEditForm();
+    });
+  }
+
+  /**
+   * Receives list from the TransferObject.
+   * Called inside retrieveData() method.
+   */
+  private setCurrentProjects(): void {
+    this.currentProjects = [];
+    this.projectsIdList = [];
+
+    if (this.data.projects.length) {
+        this.currentProjects = this.data.projects;
+        this.setProjectsIdList();
+    }
+  }
+
+  /**
+   * Process projects list into a collection of
+   * ids that will be se stored on the server.
+   */
+  private setProjectsIdList(): void {
+    for (let i = 0; i < this.currentProjects.length; i++) {
+      this.projectsIdList.push(this.currentProjects[i].id);
+    }
+  }
+
+  /**
    * Retrieves data from server passed in through the
    * transferData object, from the parent component.
    *
@@ -155,8 +197,9 @@ export class TeamsFormComponent implements OnInit {
     this.teamsForm = this.fb.group({
       id: [null],
       code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
-      name: [null, [Validators.required, Validators.maxLength(25), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      name: [null, [Validators.required, Validators.maxLength(25)]],
       competence_center_id: [null, [Validators.required]],
+      projects: [null]
     });
   }
 
@@ -172,6 +215,21 @@ export class TeamsFormComponent implements OnInit {
       code: this.data.code,
       name: this.data.name,
       competence_center_id: this.data.competence_center_id,
+      projects: this.projectsIdList
+    });
+  }
+
+  /**
+   * Called asynchronously to update the
+   * selected project checkboxes.
+   *
+   * Called inside setCurrentProjects()
+   */
+  private setProjectsOnEditForm(): void {
+    setTimeout(() => {
+      this.teamsForm.patchValue({
+        projects: this.projectsIdList
+      });
     });
   }
 
