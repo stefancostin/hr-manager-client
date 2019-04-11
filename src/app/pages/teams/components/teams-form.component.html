@@ -11,12 +11,34 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="code" formControlName="code" placeholder="Code">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="teamsForm.controls['code'].errors?.required && teamsForm.controls['code'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="teamsForm.controls['code'].errors?.maxlength">
+          Max. 3 characters allowed.
+        </p>
+        <p *ngIf="teamsForm.controls['code'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="name" class="col-sm-3 col-form-label">Name</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="name" formControlName="name" placeholder="Name">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="teamsForm.controls['name'].errors?.required && teamsForm.controls['name'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="teamsForm.controls['name'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+        <p *ngIf="teamsForm.controls['name'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="competenceCenter" class="col-sm-3 col-form-label">Competence Center</label>
@@ -25,6 +47,11 @@
           <nb-option *ngFor="let competenceCenter of competenceCenters" [value]="competenceCenter.id">{{ competenceCenter.code }}</nb-option>
         </nb-select>
       </div>
+      <!-- <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="teamsForm.controls['competence_center_id'].errors?.required && teamsForm.controls['competence_center_id'].touched">
+          Field is required.
+        </p>
+      </article> -->
     </div>
     <div class="form-group row">
       <div class="offset-sm-3 col-sm-9">

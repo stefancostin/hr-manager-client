@@ -48,6 +48,7 @@ export class EmployeesFormComponent implements OnInit {
    * Event: Binds to the ADD EMPLOYEE button.
    */
   public createEntity(): void {
+    console.log(this.employeesForm.value)
     this.employeeService.addEmployee(this.employeesForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'employee', this.transferData.formType, 3000);

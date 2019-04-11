@@ -30,4 +30,9 @@ export class EmployeeService {
     return this.http.delete(url);
   }
 
+  public getEmployeesWithoutComputer(): Observable<any> {
+    const url: string = `${BASE_URL}/employees-without-computer`;
+    return this.http.get(url);
+  }
+
 }

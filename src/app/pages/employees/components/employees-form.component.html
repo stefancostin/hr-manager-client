@@ -11,18 +11,45 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="first_name" formControlName="first_name" placeholder="First Name">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="employeesForm.controls['first_name'].errors?.required && employeesForm.controls['first_name'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="employeesForm.controls['first_name'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="last_name" class="col-sm-3 col-form-label">Last Name</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="Last Name">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="employeesForm.controls['last_name'].errors?.required && employeesForm.controls['last_name'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="employeesForm.controls['last_name'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="email" class="col-sm-3 col-form-label">E-Mail</label>
       <div class="col-sm-9">
         <input type="email" class="form-control" id="email" formControlName="email" placeholder="name.surname@mail.com">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="employeesForm.controls['email'].errors?.required && employeesForm.controls['email'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="employeesForm.controls['email'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+        <p *ngIf="employeesForm.controls['email'].errors?.email">
+          Email format is required.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="hiring_date" class="col-sm-3 col-form-label">Hiring Date</label>
@@ -30,6 +57,11 @@
         <input nbInput id="hiring_date" formControlName="hiring_date" placeholder="Hiring Date" [nbDatepicker]="picker">
         <nb-datepicker #picker format="dd\MM\yyyy"></nb-datepicker>
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="employeesForm.controls['hiring_date'].errors?.required && employeesForm.controls['hiring_date'].touched">
+          Field is required.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="role" class="col-sm-3 col-form-label">Role</label>
@@ -46,6 +78,7 @@
           <nb-option *ngFor="let team of teams" [value]="team.id">{{ team.code }}</nb-option>
         </nb-select>
       </div>
+      
     </div>
     <div class="form-group row">
       <div class="offset-sm-3 col-sm-9">

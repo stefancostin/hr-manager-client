@@ -11,30 +11,92 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="os" formControlName="operating_system" placeholder="Operating System">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="computersForm.controls['operating_system'].errors?.required && computersForm.controls['operating_system'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="computersForm.controls['operating_system'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+        <p *ngIf="computersForm.controls['operating_system'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="cpu" class="col-sm-3 col-form-label">CPU</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="cpu" formControlName="cpu" placeholder="CPU">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="computersForm.controls['cpu'].errors?.required && computersForm.controls['cpu'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="computersForm.controls['cpu'].errors?.maxlength">
+          Max. 6 characters allowed.
+        </p>
+        <p *ngIf="computersForm.controls['cpu'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="ram" class="col-sm-3 col-form-label">RAM</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="ram" formControlName="ram" placeholder="RAM">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="computersForm.controls['ram'].errors?.required && computersForm.controls['ram'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="computersForm.controls['ram'].errors?.maxlength">
+          Max. 6 characters allowed.
+        </p>
+        <p *ngIf="computersForm.controls['ram'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="hdd" class="col-sm-3 col-form-label">HDD</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="hdd" formControlName="hdd" placeholder="HDD">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="computersForm.controls['hdd'].errors?.required && computersForm.controls['hdd'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="computersForm.controls['hdd'].errors?.maxlength">
+          Max. 6 characters allowed.
+        </p>
+        <p *ngIf="computersForm.controls['hdd'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
+    </div>
+    <div class="form-group row">
+      <label for="code" class="col-sm-3 col-form-label">Code</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="code" formControlName="code" placeholder="Code">
+      </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="computersForm.controls['code'].errors?.required && computersForm.controls['code'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="computersForm.controls['code'].errors?.maxlength">
+          Max. 10 characters allowed.
+        </p>
+        <p *ngIf="computersForm.controls['code'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="employee" class="col-sm-3 col-form-label">Employee</label>
       <div class="col-sm-9">
         <nb-select id="employee" formControlName="employee_id" [(selected)]="currentEmployee.id" placeholder="Employee" outline status="primary">
-          <nb-option value="null">None</nb-option>
+          <nb-option value="">None</nb-option>
+          <!-- <nb-option [value]="data.employee_id">Current Employee</nb-option> -->
           <nb-option *ngFor="let employee of employees" [value]="employee.id">{{ employee.first_name }} {{ employee.last_name }}</nb-option>
         </nb-select>
       </div>

@@ -11,23 +11,50 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="code" formControlName="code" placeholder="Code">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="competenceCentersForm.controls['code'].errors?.required && competenceCentersForm.controls['code'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="competenceCentersForm.controls['code'].errors?.maxlength">
+          Max. 3 characters allowed.
+        </p>
+        <p *ngIf="competenceCentersForm.controls['code'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="city" class="col-sm-3 col-form-label">City</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="city" formControlName="city" placeholder="City">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="competenceCentersForm.controls['city'].errors?.required && competenceCentersForm.controls['city'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="competenceCentersForm.controls['city'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="country" class="col-sm-3 col-form-label">Country</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="country" formControlName="country" placeholder="Country">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="competenceCentersForm.controls['country'].errors?.required && competenceCentersForm.controls['country'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="competenceCentersForm.controls['country'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <div class="offset-sm-3 col-sm-9">
-        <button *ngIf="action === 'CREATE'" type="submit" class="btn btn-success mr-3" (click)="createEntity()">Add Competence Center</button>
-        <button *ngIf="action === 'EDIT'" type="submit" class="btn btn-success mr-3" (click)="editEntity()">Edit Competence Center</button>
+        <button *ngIf="action === 'CREATE'" type="submit" class="btn btn-success mr-3" (click)="createEntity()">Add Comp. Center</button>
+        <button *ngIf="action === 'EDIT'" type="submit" class="btn btn-success mr-3" (click)="editEntity()">Edit Comp. Center</button>
         <button type="submit" class="btn btn-outline-secondary" (click)="openTableView()">Cancel</button>
       </div>
     </div>

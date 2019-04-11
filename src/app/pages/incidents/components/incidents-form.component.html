@@ -11,18 +11,45 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="code" formControlName="code" placeholder="Code">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="incidentsForm.controls['code'].errors?.required && incidentsForm.controls['code'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="incidentsForm.controls['code'].errors?.maxlength">
+          Max. 3 characters allowed.
+        </p>
+        <p *ngIf="incidentsForm.controls['code'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="subject" class="col-sm-3 col-form-label">Subject</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="subject" formControlName="subject" placeholder="Subject">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="incidentsForm.controls['subject'].errors?.required && incidentsForm.controls['subject'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="incidentsForm.controls['subject'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="description" class="col-sm-3 col-form-label">Description</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="description" formControlName="description" placeholder="Description">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="incidentsForm.controls['description'].errors?.required && incidentsForm.controls['description'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="incidentsForm.controls['description'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="project" class="col-sm-3 col-form-label">Project</label>
@@ -31,6 +58,11 @@
           <nb-option *ngFor="let project of projects" [value]="project.id" (click)="checkProjectSelection()">{{ project.code }}</nb-option>
         </nb-select>
       </div>
+      <!-- <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="incidentsForm.controls['project_id'].errors?.required && incidentsForm.controls['project_id'].touched">
+          Field is required.
+        </p>
+      </article> -->
     </div>
     <div class="form-group row">
       <label for="employee" class="col-sm-3 col-form-label">Employee</label>
@@ -39,6 +71,11 @@
           <nb-option *ngFor="let employee of employees" [value]="employee.id">{{ employee.first_name }} {{ employee.last_name }}</nb-option>
         </nb-select>
       </div>
+      <!-- <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="incidentsForm.controls['employee_id'].errors?.required && incidentsForm.controls['employee_id'].touched">
+          Field is required.
+        </p>
+      </article> -->
     </div>
     <div class="form-group row">
       <div class="offset-sm-3 col-sm-9">

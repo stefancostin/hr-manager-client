@@ -11,12 +11,31 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="code" formControlName="code" placeholder="Code">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="projectsForm.controls['code'].errors?.required && projectsForm.controls['code'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="projectsForm.controls['code'].errors?.maxlength">
+          Max. 3 characters allowed.
+        </p>
+        <p *ngIf="projectsForm.controls['code'].errors?.pattern">
+          You can use only letters and numbers.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="name" class="col-sm-3 col-form-label">Name</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" id="name" formControlName="name" placeholder="Name">
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="projectsForm.controls['name'].errors?.required && projectsForm.controls['name'].touched">
+          Field is required.
+        </p>
+        <p *ngIf="projectsForm.controls['name'].errors?.maxlength">
+          Max. 25 characters allowed.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <label for="team" class="col-sm-3 col-form-label">Team</label>
@@ -30,6 +49,11 @@
           <nb-option value="4">RO6</nb-option>
         </nb-select>
       </div>
+      <article class="offset-sm-3 col-sm-9 error">
+        <p *ngIf="projectsForm.controls['team_id'].errors?.required && projectsForm.controls['team_id'].touched">
+          Field is required.
+        </p>
+      </article>
     </div>
     <div class="form-group row">
       <div class="offset-sm-3 col-sm-9">

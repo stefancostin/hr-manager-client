@@ -43,6 +43,7 @@ export class ComputersFormComponent implements OnInit {
    * Event: Binds to the ADD COMPUTER button.
    */
   public createEntity(): void {
+    console.log(this.computersForm.value);
     this.computerService.addComputer(this.computersForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'computer', this.transferData.formType, 3000);
@@ -111,12 +112,13 @@ export class ComputersFormComponent implements OnInit {
   private getEmployees(): void {
     this.currentEmployee = new Employee();
 
-    this.employeeService.getEmployees().subscribe(resp => {
+    this.employeeService.getEmployeesWithoutComputer().subscribe(resp => {
       this.employees = resp.data;
+      console.log(this.employees);
 
       // On Edit
       if (this.transferData.formType === Actions.Edit) {
-        this.findCurrentCompetenceCenter();
+        this.findCurrentEmployee();
       }
     });
   }
@@ -125,16 +127,11 @@ export class ComputersFormComponent implements OnInit {
    * Iterates through the list received from the server
    * to find what the current selected entity is.
    */
-  private findCurrentCompetenceCenter(): void {
-    for (let i = 0; i < this.employees.length; i++) {
-      if (this.employees[i].id === this.data.employee_id) {
-
-        // Queue it for the next event loop
-        setTimeout(() => {
-          this.currentEmployee = this.employees[i];
-        });
-      }
-    }
+  private findCurrentEmployee(): void {
+    setTimeout(() => {
+      this.currentEmployee = new Employee();
+      this.currentEmployee.id = this.data.employee_id;
+    });
   }
 
   /**
@@ -156,11 +153,12 @@ export class ComputersFormComponent implements OnInit {
   private createForm(): void {
     this.computersForm = this.fb.group({
       id: [null],
+      code: [null, [Validators.required, Validators.maxLength(10), Validators.pattern('^[a-zA-Z0-9]*$')]],
       employee_id: [null, [Validators.required]],
-      operating_system: [null, [Validators.required, Validators.maxLength(25)]],
-      cpu: [null, [Validators.required, Validators.maxLength(6)]],
-      ram: [null, [Validators.required, Validators.maxLength(6)]],
-      hdd: [null, [Validators.required, Validators.maxLength(6)]],
+      operating_system: [null, [Validators.required, Validators.maxLength(25), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      cpu: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      ram: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      hdd: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
     });
   }
 
@@ -173,6 +171,7 @@ export class ComputersFormComponent implements OnInit {
   private populateEditForm(): void {
     this.computersForm.setValue({
       id: this.data.id,
+      code: this.data.code,
       employee_id: this.data.employee_id,
       operating_system: this.data.operating_system,
       cpu: this.data.cpu,

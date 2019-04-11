@@ -17,3 +17,19 @@ button {
     font-weight: 300;
     color: nb-theme(color-fg);
 }
+
+.error {
+    font-size: 11px;
+    color: #ff0000;
+    position: relative;
+    p {
+        margin: 0.5rem 0 0;
+    }
+    p.hint {
+        position: absolute;
+        color: #666666;
+        b {
+            color: #000000;
+        }
+    }
+}

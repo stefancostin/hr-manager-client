@@ -25,9 +25,14 @@ export class ComputersTableSettings {
           editable: false,
           width: '30px',
         },
-        employee_id: {
+        employee: {
           title: 'Assigned To',
           type: 'string',
+          valuePrepareFunction: (employee) => {
+            if (employee) {
+              return `${employee.first_name} ${employee.last_name}`;
+            }
+          }
         },
         operating_system: {
           title: 'Operating System',
@@ -45,6 +50,11 @@ export class ComputersTableSettings {
           title: 'HDD',
           type: 'string',
         },
+        code: {
+          title: 'Code',
+          type: 'string',
+          width: '100px'
+        }
       },
     };
   }

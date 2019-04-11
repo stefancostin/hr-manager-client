@@ -148,7 +148,6 @@ export class IncidentsFormComponent implements OnInit {
         // Queue it for the next event loop
         setTimeout(() => {
           this.currentEmployee = this.employees[i];
-          console.log('currentEmployee', this.currentEmployee);
         });
       }
     }
