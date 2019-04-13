@@ -51,7 +51,7 @@ export class ConfirmationComponent implements OnInit {
         this.confirmationService.confirmDeleteComputer();
         break;
       case Actors.Employee:
-        this.confirmationService.confirmDeleteIncident();
+        this.confirmationService.confirmDeleteEmployee();
         break;
       case Actors.Incident:
         this.confirmationService.confirmDeleteIncident();

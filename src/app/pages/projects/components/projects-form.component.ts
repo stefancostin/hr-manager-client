@@ -57,7 +57,6 @@ export class ProjectsFormComponent implements OnInit {
    * Event: Binds to the EDIT PROJECT button.
    */
   public editEntity(): void {
-    console.log(this.projectsForm.value)
     this.projectService.updateProject(this.projectsForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'project', this.transferData.formType, 3000);

@@ -10,6 +10,7 @@ import { RoleService } from '../../roles/services/role.service';
 import { IRole, Role } from '../../roles/role.model';
 import { TeamService } from '../../teams/services/team.service';
 import { ITeam, Team } from '../../teams/team.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'hr-employees-form',
@@ -19,8 +20,7 @@ import { ITeam, Team } from '../../teams/team.model';
 export class EmployeesFormComponent implements OnInit {
   @Output() leave = new EventEmitter();
   @Output() refreshData = new EventEmitter();
-  @Input() transferData: any;
-  // @Input() transferData: TransferObject;
+  @Input() transferData: TransferObject;
   public action: string;
   public employeesForm: FormGroup;
   public data: IEmployee;
@@ -48,7 +48,7 @@ export class EmployeesFormComponent implements OnInit {
    * Event: Binds to the ADD EMPLOYEE button.
    */
   public createEntity(): void {
-    console.log(this.employeesForm.value)
+    this.formatDateOnSubmit();
     this.employeeService.addEmployee(this.employeesForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'employee', this.transferData.formType, 3000);
@@ -64,6 +64,7 @@ export class EmployeesFormComponent implements OnInit {
    * Event: Binds to the EDIT EMPLOYEE button.
    */
   public editEntity(): void {
+    this.formatDateOnSubmit();
     this.employeeService.updateEmployee(this.employeesForm.value).subscribe(resp => {
       this.updateDataSource();
       this.notificationService.showToast('success', 'employee', this.transferData.formType, 3000);
@@ -176,6 +177,32 @@ export class EmployeesFormComponent implements OnInit {
   }
 
   /**
+   * Format Date so that Carbon can transform and
+   * then persist it to the database.
+   *
+   * Used on 'CREATE' and 'EDIT' actions.
+   */
+  private formatDateOnSubmit(): void {
+    const date: string = this.employeesForm.controls.hiring_date.value;
+    const momentHiringDate = moment(date, 'YYYY-MM-DD');
+    this.employeesForm.patchValue({
+      hiring_date: momentHiringDate.format('YYYY-MM-DD')
+    });
+  }
+
+  /**
+   * Format Date so that what is received from the
+   * server is compatible with moment.js dialog.
+   *
+   * @param date = date received from the server
+   */
+  private formatDateOnInit(date) {
+    const momentHiringDate = moment(date, 'YYYY-MM-DD').toDate();
+    // return momentHiringDate.format('YYYY-MM-DD');
+    return momentHiringDate;
+  }
+
+  /**
    * Retrieves data from server passed in through the
    * transferData object, from the parent component.
    *
@@ -215,7 +242,7 @@ export class EmployeesFormComponent implements OnInit {
       first_name: this.data.first_name,
       last_name: this.data.last_name,
       email: this.data.email,
-      hiring_date: this.data.hiring_date,
+      hiring_date: this.formatDateOnInit(this.data.hiring_date),
       role_id: this.data.role_id,
       team_id: this.data.team_id
     });

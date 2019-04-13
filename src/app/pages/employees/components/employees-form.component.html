@@ -52,10 +52,10 @@
       </article>
     </div>
     <div class="form-group row">
-      <label for="hiring_date" class="col-sm-3 col-form-label">Hiring Date</label>
+      <label for="hiringDate" class="col-sm-3 col-form-label">Hiring Date</label>
       <div class="col-sm-9">
-        <input nbInput id="hiring_date" formControlName="hiring_date" placeholder="Hiring Date" [nbDatepicker]="picker">
-        <nb-datepicker #picker format="dd\MM\yyyy"></nb-datepicker>
+        <input nbInput id="hiringDate" formControlName="hiring_date" placeholder="Hiring Date" [nbDatepicker]="picker">
+        <nb-datepicker #picker format="dd-MM-yyyy"></nb-datepicker>
       </div>
       <article class="offset-sm-3 col-sm-9 error">
         <p *ngIf="employeesForm.controls['hiring_date'].errors?.required && employeesForm.controls['hiring_date'].touched">

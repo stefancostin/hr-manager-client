@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export class EmployeesTableSettings {
   settings = {
     mode: 'external',
@@ -51,9 +53,17 @@ export class EmployeesTableSettings {
           return team.code;
         }
       },
+      // hiring_date: {
+      //   title: 'Hiring Date',
+      //   type: 'number',
+      // },
       hiring_date: {
         title: 'Hiring Date',
         type: 'number',
+        valuePrepareFunction: (date) => {
+          const momentHiringDate = moment(date, 'YYYY-MM-DD');
+          return momentHiringDate.format('DD-MM-YYYY');
+        }
       },
     },
   };
