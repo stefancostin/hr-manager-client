@@ -196,7 +196,7 @@ export class TeamsFormComponent implements OnInit {
   private createForm(): void {
     this.teamsForm = this.fb.group({
       id: [null],
-      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      code: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
       name: [null, [Validators.required, Validators.maxLength(25)]],
       competence_center_id: [null, [Validators.required]],
       projects: [null]

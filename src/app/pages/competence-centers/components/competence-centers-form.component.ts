@@ -116,7 +116,7 @@ export class CompetenceCentersFormComponent implements OnInit {
   private createForm(): void {
     this.competenceCentersForm = this.fb.group({
       id: [null],
-      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      code: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
       city: [null, [Validators.required, Validators.maxLength(25)]],
       country: [null, [Validators.required, Validators.maxLength(25)]],
     });

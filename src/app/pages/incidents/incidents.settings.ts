@@ -19,12 +19,6 @@ export class IncidentsTableSettings {
       position: 'right',
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-        editable: false,
-        width: '30px',
-      },
       code: {
         title: 'Code',
         type: 'string',
@@ -52,6 +46,12 @@ export class IncidentsTableSettings {
         valuePrepareFunction: (employee) => {
           return `${employee.first_name} ${employee.last_name}`;
         }
+      },
+      is_solved: {
+        title: 'Solved',
+        type: 'boolean',
+        width: '60px',
+        valuePrepareFunction: (value) => value === 1 ? 'Y' : 'N',
       },
     },
   };

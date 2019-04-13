@@ -16,7 +16,7 @@
           Field is required.
         </p>
         <p *ngIf="incidentsForm.controls['code'].errors?.maxlength">
-          Max. 3 characters allowed.
+          Max. 6 characters allowed.
         </p>
         <p *ngIf="incidentsForm.controls['code'].errors?.pattern">
           You can use only letters and numbers.
@@ -76,6 +76,12 @@
           Field is required.
         </p>
       </article> -->
+    </div>
+    <div class="form-group row">
+      <label for="is_solved" class="col-sm-3 col-form-label">Status</label>
+      <div class="col-sm-9">
+        <nb-checkbox formControlName="is_solved">Is Incident Solved</nb-checkbox>
+      </div>
     </div>
     <div class="form-group row">
       <div class="offset-sm-3 col-sm-9">

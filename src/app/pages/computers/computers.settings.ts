@@ -19,11 +19,10 @@ export class ComputersTableSettings {
         position: 'right',
       },
       columns: {
-        id: {
-          title: 'ID',
-          type: 'number',
-          editable: false,
-          width: '30px',
+        code: {
+          title: 'Code',
+          type: 'string',
+          width: '100px'
         },
         employee: {
           title: 'Assigned To',
@@ -50,11 +49,6 @@ export class ComputersTableSettings {
           title: 'HDD',
           type: 'string',
         },
-        code: {
-          title: 'Code',
-          type: 'string',
-          width: '100px'
-        }
       },
     };
   }

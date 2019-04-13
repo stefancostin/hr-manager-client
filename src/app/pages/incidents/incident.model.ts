@@ -5,6 +5,7 @@ export interface IIncident {
     code: string;
     subject: string;
     description: string;
+    is_solved: boolean;
 }
 
 export class Incident implements IIncident {
@@ -14,6 +15,7 @@ export class Incident implements IIncident {
     code: string;
     subject: string;
     description: string;
+    is_solved: boolean;
 
     public constructor() {
         this.id = null;
@@ -22,6 +24,7 @@ export class Incident implements IIncident {
         this.code = null;
         this.subject = null;
         this.description = null;
+        this.is_solved = null;
     }
 }
 

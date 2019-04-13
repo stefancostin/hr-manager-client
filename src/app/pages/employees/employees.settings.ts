@@ -21,12 +21,6 @@ export class EmployeesTableSettings {
       position: 'right',
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-        editable: false,
-        width: '30px',
-      },
       first_name: {
         title: 'First Name',
         type: 'string',
@@ -53,10 +47,6 @@ export class EmployeesTableSettings {
           return team.code;
         }
       },
-      // hiring_date: {
-      //   title: 'Hiring Date',
-      //   type: 'number',
-      // },
       hiring_date: {
         title: 'Hiring Date',
         type: 'number',

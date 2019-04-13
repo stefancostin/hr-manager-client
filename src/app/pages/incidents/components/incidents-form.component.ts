@@ -220,9 +220,10 @@ export class IncidentsFormComponent implements OnInit {
   private createForm(): void {
     this.incidentsForm = this.fb.group({
       id: [null],
-      code: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('^[a-zA-Z0-9]*$')]],
+      code: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
       subject: [null, [Validators.required, Validators.maxLength(25)]],
       description: [null, [Validators.required, Validators.maxLength(200)]],
+      is_solved: [null],
       project_id: [null, [Validators.required]],
       employee_id: [
         {value: null, disabled: this.isProjectSelected},
@@ -243,6 +244,7 @@ export class IncidentsFormComponent implements OnInit {
       code: this.data.code,
       subject: this.data.subject,
       description: this.data.description,
+      is_solved: this.data.is_solved,
       project_id: this.data.project_id,
       employee_id: this.data.employee_id,
     });

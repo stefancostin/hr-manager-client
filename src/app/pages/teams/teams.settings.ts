@@ -19,12 +19,6 @@ export class TeamsTableSettings {
       position: 'right',
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-        editable: false,
-        width: '30px',
-      },
       code: {
         title: 'Code',
         type: 'string',
