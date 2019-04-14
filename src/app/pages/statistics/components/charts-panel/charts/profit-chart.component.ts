@@ -126,7 +126,7 @@ export class ProfitChartComponent implements AfterViewInit, OnInit, OnDestroy, O
       ],
       series: [
         {
-          name: 'Canceled',
+          name: 'Employees',
           type: 'bar',
           barGap: 0,
           barWidth: '20%',
