@@ -1,0 +1,22 @@
+<nb-card size="large">
+  <nb-tabset fullWidth (changeTab)="changeTab($event)">
+    <nb-tab tabTitle="Timeline">
+      <div class="chart-container">
+        <hr-chart-panel-summary [summary]="chartPanelSummary"></hr-chart-panel-summary>
+        <hr-chart-panel-header [type]="period"
+                                (periodChange)="setPeriodAndGetChartData($event)">
+        </hr-chart-panel-header>
+        <hr-orders-chart #ordersChart [ordersChartData]="ordersChartData"></hr-orders-chart>
+      </div>
+    </nb-tab>
+    <nb-tab tabTitle="Compare" [lazyLoad]="true">
+      <div class="chart-container">
+        <hr-chart-panel-summary [summary]="chartPanelSummary"></hr-chart-panel-summary>
+        <hr-chart-panel-header [type]="period"
+                                (periodChange)="setPeriodAndGetChartData($event)">
+        </hr-chart-panel-header>
+        <hr-profit-chart #profitChart [profitChartData]="profitChartData"></hr-profit-chart>
+      </div>
+    </nb-tab>
+  </nb-tabset>
+</nb-card>

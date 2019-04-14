@@ -16,6 +16,9 @@ const routes: Routes = [{
     path: 'iot-dashboard',
     component: DashboardComponent,
   }, {
+    path: 'statistics',
+    loadChildren: './statistics/statistics.module#StatisticsModule',
+  }, {
     path: 'competence-centers',
     loadChildren: './competence-centers/competence-centers.module#CompetenceCentersModule',
   }, {

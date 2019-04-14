@@ -67,7 +67,7 @@
       <label for="role" class="col-sm-3 col-form-label">Role</label>
       <div class="col-sm-9">
         <nb-select id="role" formControlName="role_id" [(selected)]="currentRole.id" placeholder="Role" outline status="primary">
-          <nb-option *ngFor="let role of roles" [value]="role.id">{{ role.code }}</nb-option>
+          <nb-option *ngFor="let role of roles" [value]="role.id">{{ role.name }} <span class="form-title-categ"> ({{ role.code }}) </span></nb-option>
         </nb-select>
       </div>
     </div>

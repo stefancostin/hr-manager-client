@@ -1,0 +1,11 @@
+<nb-card size="xsmall" class="solar-card">
+  <nb-card-header>Employees Assigned to Open Incidents</nb-card-header>
+  <nb-card-body>
+    <div echarts [options]="option" class="echart">
+    </div>
+    <div class="info">
+      <div class="value"> {{ employees.assignedToOpenIncidents }} employees</div>
+      <div class="details"><span>out of</span> {{ employees.totalEmployees }} <span> employees are currently assigned to <b>open</b> incidents.</span></div>
+    </div>
+  </nb-card-body>
+</nb-card>

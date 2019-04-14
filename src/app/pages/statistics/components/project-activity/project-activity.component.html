@@ -1,0 +1,21 @@
+<nb-card size="medium">
+  <nb-card-header>
+    <span>Project Activity</span>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="progress-info" *ngFor="let item of projectActivity">
+      <hr>
+      <div class="title">
+        {{ item.code | uppercase }}
+        <span class="label">
+          {{ item.name }}
+        </span>
+      </div>
+      <div class="value">{{ item.closedIncidents }} / {{ item.totalIncidents }} </div>
+      <nb-progress-bar [value]="item.closedIncidentsPercentage"></nb-progress-bar>
+      <div class="description">
+        <bdi>Closed Incidents</bdi>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

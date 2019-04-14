@@ -1,0 +1,38 @@
+<nb-card size="medium">
+    <nb-card-header>
+      <span>Team Activity</span>
+    </nb-card-header>
+    <nb-card-body>
+      <ul class="user-activity-list">
+        <li *ngFor="let item of teamActivity">
+          <div class="visited-date">
+            {{ item.code }}
+          </div>
+          <div class="visited-pages-count">
+            <div class="title">Members</div>
+            <div class="value">{{ item.employees }}</div>
+          </div>
+          <div class="visited-pages-count">
+            <div class="title">Projects</div>
+            <div class="value">{{ item.projects }}</div>
+          </div>
+          <div class="visited-pages-count">
+            <div class="title">Open Incidents</div>
+            <div class="value">{{ item.openIncidents }}</div>
+          </div>
+          <div class="visited-pages-count">
+            <div class="title">Closed Incidents</div>
+            <div class="value">{{ item.closedIncidents }}</div>
+          </div>
+          <!-- <div class="visited-percentages">
+            <div class="title">New visits, %</div>
+            <div class="delta value"
+                 [class.up]="item.deltaUp"
+                 [class.down]="!item.deltaUp">
+              {{ item.newVisits }}%
+            </div>
+          </div> -->
+        </li>
+      </ul>
+    </nb-card-body>
+</nb-card>

@@ -1,0 +1,11 @@
+<nb-card size="xsmall" class="solar-card">
+    <nb-card-header>Total Closed Incidents</nb-card-header>
+    <nb-card-body>
+      <div echarts [options]="option" class="echart">
+      </div>
+      <div class="info">
+        <div class="value"> {{ incidents.closedIncidents }} incidents</div>
+        <div class="details"><span>out of</span> {{ incidents.totalIncidents }} <span> have been <b>closed</b>. There are <b>{{ (incidents.totalIncidents - incidents.closedIncidents) }}</b> more incidents to go.</span></div>
+      </div>
+    </nb-card-body>
+</nb-card>
