@@ -6,6 +6,7 @@ import { ProfitChartComponent } from './charts/profit-chart.component';
 import { OrdersChart } from '../../../../@core/data/orders-chart';
 import { ProfitChart } from '../../../../@core/data/profit-chart';
 import { OrderProfitChartSummary, OrdersProfitChartData } from '../../../../@core/data/orders-profit-chart';
+import { StatisticService } from '../../services/statistic.service';
 
 @Component({
   selector: 'hr-charts',
@@ -16,6 +17,8 @@ export class ChartsPanelComponent implements OnDestroy {
 
   private alive = true;
 
+  public chartSummary = [];
+
   chartPanelSummary: OrderProfitChartSummary[];
   period: string = 'month';
   ordersChartData: OrdersChart;
@@ -24,7 +27,8 @@ export class ChartsPanelComponent implements OnDestroy {
   @ViewChild('ordersChart') ordersChart: OrdersChartComponent;
   @ViewChild('profitChart') profitChart: ProfitChartComponent;
 
-  constructor(private ordersProfitChartService: OrdersProfitChartData) {
+  constructor(private ordersProfitChartService: OrdersProfitChartData,
+              private statisticService: StatisticService) {
     this.ordersProfitChartService.getOrderProfitChartSummary()
       .pipe(takeWhile(() => this.alive))
       .subscribe((summary) => {
@@ -33,6 +37,10 @@ export class ChartsPanelComponent implements OnDestroy {
 
     this.getOrdersChartData(this.period);
     this.getProfitChartData(this.period);
+    
+    this.statisticService.getSummaryChart().subscribe(resp => {
+      this.chartSummary = resp.data;
+    });
   }
 
   setPeriodAndGetChartData(value: string): void {

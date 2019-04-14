@@ -40,4 +40,9 @@ export class StatisticService {
     return this.http.get(url);
   }
 
+  public getSummaryChart(): Observable<any> {
+    const url: string = `${BASE_URL}/statistics/summary-chart`;
+    return this.http.get(url);
+  }
+
 }

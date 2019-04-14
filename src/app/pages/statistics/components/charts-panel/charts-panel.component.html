@@ -2,7 +2,7 @@
   <nb-tabset fullWidth (changeTab)="changeTab($event)">
     <nb-tab tabTitle="Timeline">
       <div class="chart-container">
-        <hr-chart-panel-summary [summary]="chartPanelSummary"></hr-chart-panel-summary>
+        <hr-chart-panel-summary [summary]="chartSummary"></hr-chart-panel-summary>
         <hr-chart-panel-header [type]="period"
                                 (periodChange)="setPeriodAndGetChartData($event)">
         </hr-chart-panel-header>
@@ -11,7 +11,7 @@
     </nb-tab>
     <nb-tab tabTitle="Compare" [lazyLoad]="true">
       <div class="chart-container">
-        <hr-chart-panel-summary [summary]="chartPanelSummary"></hr-chart-panel-summary>
+        <hr-chart-panel-summary [summary]="chartSummary"></hr-chart-panel-summary>
         <hr-chart-panel-header [type]="period"
                                 (periodChange)="setPeriodAndGetChartData($event)">
         </hr-chart-panel-header>
