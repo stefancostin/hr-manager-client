@@ -62,10 +62,10 @@ export class ProfitChartComponent implements AfterViewInit, OnInit, OnDestroy, O
         this.setOptions(eTheme);
         // this.updateProfitChartOptions(this.ordersChartData);
         setTimeout(() => {
-          this.updateProfitChartOptions(this.compareChartData);
+          setTimeout(() => {
+            this.updateProfitChartOptions(this.compareChartData);
+          });
         });
-
-        console.log('PROFIT', this.profitChartData);
       });
   }
 

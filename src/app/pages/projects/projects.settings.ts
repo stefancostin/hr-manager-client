@@ -41,7 +41,8 @@ export class ProjectsTableSettings {
             return teams.slice(0, -2);
           }
           return null;
-        }
+        },
+        filter: false,
       },
     },
   };

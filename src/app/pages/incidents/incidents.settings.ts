@@ -38,20 +38,23 @@ export class IncidentsTableSettings {
         width: '100px',
         valuePrepareFunction: (project) => {
           return project.code;
-        }
+        },
+        filter: false,
       },
       employee: {
         title: 'Assigned To',
         type: 'string',
         valuePrepareFunction: (employee) => {
           return `${employee.first_name} ${employee.last_name}`;
-        }
+        },
+        filter: false,
       },
       is_solved: {
         title: 'Solved',
         type: 'boolean',
         width: '60px',
         valuePrepareFunction: (value) => value === 1 ? 'Y' : 'N',
+        filter: false,
       },
     },
   };

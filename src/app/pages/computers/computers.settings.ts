@@ -24,15 +24,6 @@ export class ComputersTableSettings {
           type: 'string',
           width: '100px'
         },
-        employee: {
-          title: 'Assigned To',
-          type: 'string',
-          valuePrepareFunction: (employee) => {
-            if (employee) {
-              return `${employee.first_name} ${employee.last_name}`;
-            }
-          }
-        },
         operating_system: {
           title: 'Operating System',
           type: 'string',
@@ -48,6 +39,16 @@ export class ComputersTableSettings {
         hdd: {
           title: 'HDD',
           type: 'string',
+        },
+        employee: {
+          title: 'Assigned To',
+          type: 'string',
+          valuePrepareFunction: (employee) => {
+            if (employee) {
+              return `${employee.first_name} ${employee.last_name}`;
+            }
+          },
+          filter: false
         },
       },
     };

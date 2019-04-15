@@ -34,7 +34,12 @@ export class TeamsTableSettings {
         width: '175px',
         valuePrepareFunction: (competenceCenter) => {
           return competenceCenter.code;
-        }
+        },
+        filterFunction: (competenceCenter: any, search: string) => {
+          if (competenceCenter.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+            return true;
+          }
+        },
       },
       projects: {
         title: 'Projects',
@@ -50,7 +55,8 @@ export class TeamsTableSettings {
             return projects.slice(0, -2);
           }
           return null;
-        }
+        },
+        filter: false,
       },
     },
   };

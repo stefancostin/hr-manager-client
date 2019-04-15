@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import { id } from '@swimlane/ngx-charts/release/utils';
+import { R3_COMPILE_DIRECTIVE } from '@angular/core/src/ivy_switch/compiler';
 
 export class EmployeesTableSettings {
   settings = {
@@ -33,20 +35,6 @@ export class EmployeesTableSettings {
         title: 'E-mail',
         type: 'string',
       },
-      role: {
-        title: 'Role',
-        type: 'string',
-        valuePrepareFunction: (role) => {
-          return role.code;
-        }
-      },
-      team: {
-        title: 'Team',
-        type: 'string',
-        valuePrepareFunction: (team) => {
-          return team.code;
-        }
-      },
       hiring_date: {
         title: 'Hiring Date',
         type: 'number',
@@ -55,6 +43,44 @@ export class EmployeesTableSettings {
           return momentHiringDate.format('DD-MM-YYYY');
         }
       },
+      role: {
+        title: 'Role',
+        type: 'string',
+        valuePrepareFunction: (role) => {
+          return role.name;
+        },
+        filterFunction: (role: any, search: string) => {
+          if (role.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+            return true;
+          }
+        },
+      },
+      team: {
+        title: 'Team',
+        type: 'string',
+        valuePrepareFunction: (team) => {
+          return team.code;
+        },
+        filterFunction: (team: any, search: string) => {
+          if (team.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+            return true;
+          }
+        },
+      },
     },
   };
 }
+
+// skills: {
+//   title:"Skills",
+//   valuePrepareFunction: (skills) => {
+//     return skills.map(s => " " + s.name + " ").toString()
+//   },
+//   filterFunction(skills?: any, search?: string): boolean {
+//     let match = skills.map(s => s.name).indexOf(search) > -1
+//     if (match || search === '') {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   },
