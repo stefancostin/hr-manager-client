@@ -32,7 +32,7 @@ export class ComputersContainerComponent implements OnInit {
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     ) {
-      this.confirmationService.getProjectDeleteConfirm().subscribe(resp => {
+      this.confirmationService.getComputerDeleteConfirm().subscribe(resp => {
         this.onDeleteConfirm();
       });
   }
@@ -121,8 +121,6 @@ export class ComputersContainerComponent implements OnInit {
         const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
         this.notificationService.showToast('danger', 'computer', Actions.Delete, 0, message);
       });
-    } else {
-      console.error('This item could not be selected for deletion.');
     }
   }
 

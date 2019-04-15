@@ -37,11 +37,15 @@ export class IncidentsTableSettings {
         type: 'string',
         width: '100px',
         valuePrepareFunction: (project) => {
-          return project.code;
+          if (project) {
+            return project.code;
+          }
         },
         filterFunction: (project: any, search: string) => {
-          if (project.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-            return true;
+          if (project) {
+            if (project.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+              return true;
+            }
           }
         },
       },
@@ -49,12 +53,16 @@ export class IncidentsTableSettings {
         title: 'Assigned To',
         type: 'string',
         valuePrepareFunction: (employee) => {
-          return `${employee.first_name} ${employee.last_name}`;
+          if (employee) {
+            return `${employee.first_name} ${employee.last_name}`;
+          }
         },
         filterFunction: (employee: any, search: string) => {
-          const name = employee.first_name.toLocaleLowerCase() + ' ' + employee.last_name.toLocaleLowerCase();
-          if (name.includes(search.toLocaleLowerCase())) {
-            return true;
+          if (employee) {
+            const name = employee.first_name.toLocaleLowerCase() + ' ' + employee.last_name.toLocaleLowerCase();
+            if (name.includes(search.toLocaleLowerCase())) {
+              return true;
+            }
           }
         },
       },

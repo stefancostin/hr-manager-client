@@ -33,11 +33,15 @@ export class TeamsTableSettings {
         type: 'string',
         width: '175px',
         valuePrepareFunction: (competenceCenter) => {
-          return competenceCenter.code;
+          if (competenceCenter) {
+            return competenceCenter.code;
+          }
         },
         filterFunction: (competenceCenter: any, search: string) => {
-          if (competenceCenter.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-            return true;
+          if (competenceCenter) {
+            if (competenceCenter.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+              return true;
+            }
           }
         },
       },
@@ -46,7 +50,7 @@ export class TeamsTableSettings {
         type: 'string',
         width: '175px',
         valuePrepareFunction: (projectCollection) => {
-          if (projectCollection.length) {
+          if (projectCollection && projectCollection.length) {
             let projects: string = '';
             for (let i = 0; i < projectCollection.length; i++) {
               projects += projectCollection[i].code.toLocaleUpperCase() + ', ';
@@ -57,7 +61,7 @@ export class TeamsTableSettings {
           return null;
         },
         filterFunction: (projects: any, search: string) => {
-          if (projects.length) {
+          if (projects && projects.length) {
             let bool = false;
             for (let i = 0; i < projects.length; i++) {
               if (projects[i].code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {

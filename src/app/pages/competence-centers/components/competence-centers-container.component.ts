@@ -122,8 +122,6 @@ export class CompetenceCentersContainerComponent implements OnInit {
         const message: string = this.notificationService.showErrorMessage(err.error.message, err.error.errors);
         this.notificationService.showToast('danger', 'competence center', Actions.Delete, 0, message);
       });
-    } else {
-      console.error('This item could not be selected for deletion.');
     }
   }
 

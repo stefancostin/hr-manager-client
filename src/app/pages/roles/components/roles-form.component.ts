@@ -117,7 +117,7 @@ export class RolesFormComponent implements OnInit {
       id: [null],
       code: [null, [Validators.required, Validators.maxLength(6), Validators.pattern('^[a-zA-Z0-9]*$')]],
       name: [null, [Validators.required, Validators.maxLength(25)]],
-      description: [null, [Validators.required, Validators.maxLength(25)]],
+      description: [null, [Validators.required, Validators.maxLength(100)]],
       is_management: [null],
     });
   }

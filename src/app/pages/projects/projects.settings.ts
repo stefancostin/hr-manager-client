@@ -32,7 +32,7 @@ export class ProjectsTableSettings {
         title: 'Teams',
         type: 'string',
         valuePrepareFunction: (teamCollection) => {
-          if (teamCollection.length) {
+          if (teamCollection && teamCollection.length) {
             let teams: string = '';
             for (let i = 0; i < teamCollection.length; i++) {
               teams += teamCollection[i].code.toLocaleUpperCase() + ', ';
@@ -43,7 +43,7 @@ export class ProjectsTableSettings {
           return null;
         },
         filterFunction: (teams: any, search: string) => {
-          if (teams.length) {
+          if (teams && teams.length) {
             let bool = false;
             for (let i = 0; i < teams.length; i++) {
               if (teams[i].code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {

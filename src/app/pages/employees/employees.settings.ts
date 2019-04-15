@@ -47,11 +47,15 @@ export class EmployeesTableSettings {
         title: 'Role',
         type: 'string',
         valuePrepareFunction: (role) => {
-          return role.name;
+          if (role) {
+            return role.name;
+          }
         },
         filterFunction: (role: any, search: string) => {
-          if (role.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-            return true;
+          if (role) {
+            if (role.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+              return true;
+            }
           }
         },
       },
@@ -59,28 +63,18 @@ export class EmployeesTableSettings {
         title: 'Team',
         type: 'string',
         valuePrepareFunction: (team) => {
-          return team.code;
+          if (team) {
+            return team.code;
+          }
         },
         filterFunction: (team: any, search: string) => {
-          if (team.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-            return true;
+          if (team) {
+            if (team.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+              return true;
+            }
           }
         },
       },
     },
   };
 }
-
-// skills: {
-//   title:"Skills",
-//   valuePrepareFunction: (skills) => {
-//     return skills.map(s => " " + s.name + " ").toString()
-//   },
-//   filterFunction(skills?: any, search?: string): boolean {
-//     let match = skills.map(s => s.name).indexOf(search) > -1
-//     if (match || search === '') {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   },
