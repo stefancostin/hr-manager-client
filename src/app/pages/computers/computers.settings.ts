@@ -48,7 +48,12 @@ export class ComputersTableSettings {
               return `${employee.first_name} ${employee.last_name}`;
             }
           },
-          filter: false
+          filterFunction: (employee: any, search: string) => {
+            const name = employee.first_name.toLocaleLowerCase() + ' ' + employee.last_name.toLocaleLowerCase();
+            if (name.includes(search.toLocaleLowerCase())) {
+              return true;
+            }
+          },
         },
       },
     };

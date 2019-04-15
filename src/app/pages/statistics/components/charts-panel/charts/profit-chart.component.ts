@@ -36,7 +36,6 @@ export class ProfitChartComponent implements AfterViewInit, OnInit, OnDestroy, O
 
     this.statisticService.getCompareChart().subscribe(resp => {
       this.compareChartData = resp.data;
-      console.log('PROFIT (SERVER)', this.compareChartData);
     });
   }
 

@@ -33,6 +33,12 @@ export class RolesTableSettings {
         type: 'boolean',
         width: '60px',
         valuePrepareFunction: (value) => value === 1 ? 'Y' : 'N',
+        filterFunction: (mgmt: any, search: string) => {
+          if (mgmt === 1 && (search === 'Y' || search === 'y') ||
+              mgmt === 0 && (search === 'N' || search === 'n')) {
+            return true;
+          }
+        },
       },
       description: {
         title: 'Description',

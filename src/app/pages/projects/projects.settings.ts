@@ -42,7 +42,17 @@ export class ProjectsTableSettings {
           }
           return null;
         },
-        filter: false,
+        filterFunction: (teams: any, search: string) => {
+          if (teams.length) {
+            let bool = false;
+            for (let i = 0; i < teams.length; i++) {
+              if (teams[i].code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+                bool = true;
+              }
+            }
+            return bool;
+          }
+        },
       },
     },
   };

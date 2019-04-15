@@ -39,7 +39,11 @@ export class IncidentsTableSettings {
         valuePrepareFunction: (project) => {
           return project.code;
         },
-        filter: false,
+        filterFunction: (project: any, search: string) => {
+          if (project.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+            return true;
+          }
+        },
       },
       employee: {
         title: 'Assigned To',
@@ -47,14 +51,24 @@ export class IncidentsTableSettings {
         valuePrepareFunction: (employee) => {
           return `${employee.first_name} ${employee.last_name}`;
         },
-        filter: false,
+        filterFunction: (employee: any, search: string) => {
+          const name = employee.first_name.toLocaleLowerCase() + ' ' + employee.last_name.toLocaleLowerCase();
+          if (name.includes(search.toLocaleLowerCase())) {
+            return true;
+          }
+        },
       },
       is_solved: {
         title: 'Solved',
         type: 'boolean',
         width: '60px',
         valuePrepareFunction: (value) => value === 1 ? 'Y' : 'N',
-        filter: false,
+        filterFunction: (solved: any, search: string) => {
+          if (solved === 1 && (search === 'Y' || search === 'y') ||
+              solved === 0 && (search === 'N' || search === 'n')) {
+            return true;
+          }
+        },
       },
     },
   };

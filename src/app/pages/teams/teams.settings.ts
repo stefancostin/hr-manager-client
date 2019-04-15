@@ -36,7 +36,7 @@ export class TeamsTableSettings {
           return competenceCenter.code;
         },
         filterFunction: (competenceCenter: any, search: string) => {
-          if (competenceCenter.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+          if (competenceCenter.code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
             return true;
           }
         },
@@ -56,7 +56,17 @@ export class TeamsTableSettings {
           }
           return null;
         },
-        filter: false,
+        filterFunction: (projects: any, search: string) => {
+          if (projects.length) {
+            let bool = false;
+            for (let i = 0; i < projects.length; i++) {
+              if (projects[i].code.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+                bool = true;
+              }
+            }
+            return bool;
+          }
+        },
       },
     },
   };
