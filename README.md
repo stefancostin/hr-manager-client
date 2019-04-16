@@ -1,7 +1,7 @@
 [NGX-Admin Installation Guidelines](https://akveo.github.io/ngx-admin/docs/getting-started/installation-guidelines#install-ngxadmin)
 
 # Admin template based on Angular 7, Bootstrap 4 and <a href="https://github.com/akveo/nebular">Nebular</a>
-<img src="https://i.imgur.com/9SLit5Q.png"/>
+<img src="https://i.imgur.com/8pXoMN4.jpg"/>
 
 ## Getting Started
 
