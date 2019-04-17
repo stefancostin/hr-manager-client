@@ -4,6 +4,15 @@ button {
     cursor: pointer !important;
 }
 
+ul,
+ul li,
+ul ul li {
+   margin:0;
+   padding: 0;
+   text-indent: 0;
+   list-style-type: none;
+}
+
 .form-title-action {
     font-weight: 500;
     color: nb-theme(color-fg-text);
@@ -28,4 +37,9 @@ button {
             color: #000000;
         }
     }
+}
+
+.horizontal-rule {
+    margin-top: 6px;
+    margin-bottom: 6px;
 }

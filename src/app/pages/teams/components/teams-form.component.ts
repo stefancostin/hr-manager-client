@@ -10,6 +10,7 @@ import { CompetenceCenterService } from '../../competence-centers/services/compe
 import { ICompetenceCenter, CompetenceCenter } from '../../competence-centers/competence-center.model';
 import { ProjectService } from '../../projects/services/project.service';
 import { IProject } from '../../projects/project.model';
+import { IEmployee } from '../../employees/employee.model';
 
 @Component({
   selector: 'hr-teams-form',
@@ -28,6 +29,7 @@ export class TeamsFormComponent implements OnInit {
   public projects: IProject[];
   public currentProjects: IProject[];
   public projectsIdList: Array<number>;
+  public employees: IEmployee[];
 
   public constructor(
   private fb: FormBuilder,
@@ -41,6 +43,7 @@ export class TeamsFormComponent implements OnInit {
     this.checkActionOnInit();
     this.getCompetenceCenters();
     this.getProjects();
+    this.getEmployees();
   }
 
   /**
@@ -174,6 +177,17 @@ export class TeamsFormComponent implements OnInit {
   private setProjectsIdList(): void {
     for (let i = 0; i < this.currentProjects.length; i++) {
       this.projectsIdList.push(this.currentProjects[i].id);
+    }
+  }
+
+  /**
+   * Sets employees array to a state variable
+   * to be used inside the html template.
+   */
+  private getEmployees(): void {
+    this.employees = [];
+    if (this.transferData.data && this.transferData.data.employees) {
+      this.employees = this.data.employees;
     }
   }
 

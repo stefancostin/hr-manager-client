@@ -4,6 +4,7 @@ export interface ITeam {
     code: string;
     name: string;
     projects?: any;
+    employees?: any;
 }
 
 export class Team implements ITeam {
@@ -12,6 +13,7 @@ export class Team implements ITeam {
     code: string;
     name: string;
     projects?: any;
+    employees?: any;
 
     public constructor() {
         this.id = null;
@@ -19,6 +21,7 @@ export class Team implements ITeam {
         this.code = null;
         this.name = null;
         this.projects = [];
+        this.employees = [];
     }
 }
 

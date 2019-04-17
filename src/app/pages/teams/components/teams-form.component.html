@@ -66,4 +66,15 @@
       </div>
     </div>
   </form>
+  <aside class="offset-md-1 col-md-5" *ngIf="(action === 'EDIT') && (employees && employees.length)">
+    <h5 class="form-title-categ">Team Members</h5>
+    <div class="row">
+      <ul class="pt-3">
+        <li *ngFor="let employee of employees">
+          <hr class="horizontal-rule">
+          <span>{{ employee.first_name }} {{ employee.last_name }}</span>
+        </li>
+      </ul>
+    </div>
+  </aside>
 </section>
